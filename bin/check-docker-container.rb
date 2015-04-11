@@ -32,6 +32,9 @@
 require 'sensu-plugin/check/cli'
 require 'docker'
 
+#
+# Check Docker Conatiners
+#
 class CheckDockerContainers < Sensu::Plugin::Check::CLI
   option :url,
          short: '-u docker host',
@@ -63,7 +66,7 @@ class CheckDockerContainers < Sensu::Plugin::Check::CLI
          proc: proc(&:to_i),
          default: 1
 
-  def run
+  def run #rubocop:disable all
     Docker.url = "#{config[:url]}"
     conn = Docker::Container.all(ruuning: true)
     count = conn.size.to_i

@@ -29,6 +29,9 @@ require 'socket'
 require 'pathname'
 require 'sys/proctable'
 
+#
+# Docker Container Metrics
+#
 class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option :scheme,
          description: 'Metric naming scheme, text to prepend to metric',
@@ -53,7 +56,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
     ok
   end
 
-  def container_metrics
+  def container_metrics #rubocop:disable all
     cgroup = Pathname(config[:cgroup_path]).join('cpu/docker')
 
     timestamp = Time.now.to_i

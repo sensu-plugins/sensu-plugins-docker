@@ -39,13 +39,16 @@
 require 'sensu-plugin/check/cli'
 require 'docker'
 
+#
+# Check Docker Conatiner
+#
 class CheckDockerContainer < Sensu::Plugin::Check::CLI
   option :url,
          short: '-u DOCKER_HOST',
          long: '--host DOCKER_HOST',
          default: 'tcp://127.0.0.1:4243/'
 
-  def run
+  def run #rubocop:disable all
     Docker.url = "#{config[:url]}"
 
     id = argv.first

@@ -13,7 +13,6 @@ require 'redcarpet'
 
 require 'yard/rake/yardoc_task'
 
-
 desc 'Don\'t run Rubocop for unsupported versions'
 begin
   if RUBY_VERSION >= '2.0.0'
