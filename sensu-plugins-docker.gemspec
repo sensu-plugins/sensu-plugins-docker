@@ -12,7 +12,7 @@ end
 pvt_key = '~/.ssh/gem-private_key.pem'
 
 Gem::Specification.new do |s|
-  s.authors                = ['Sensu Plugins and contributors']
+  s.authors                = ['Sensu-Plugins and contributors']
   s.cert_chain             = ['certs/sensu-plugins.pem']
   s.date                   = Date.today.to_s
   s.description            = 'Sensu plugins for docker'
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.metadata               = { 'maintainer'         => '@mattyjones',
                                'development_status' => 'active',
                                'production_status'  => 'unstable - testing recommended'
-  }
+                               }
   s.name                   = 'sensu-plugins-docker'
   s.platform               = Gem::Platform::RUBY
   s.post_install_message   = 'You can use the embedded Ruby by setting EMBEDDED_RUBY=true in /etc/default/sensu'
