@@ -23,7 +23,9 @@ Gem::Specification.new do |s|
   s.license                = 'MIT'
   s.metadata               = { 'maintainer'         => '@mattyjones',
                                'development_status' => 'active',
-                               'production_status'  => 'unstable - testing recommended'
+                               'production_status'  => 'unstable - testing recommended',
+                               'release_draft'      => 'false',
+                               'release_prerelease' => 'false'
                                }
   s.name                   = 'sensu-plugins-docker'
   s.platform               = Gem::Platform::RUBY
