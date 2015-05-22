@@ -5,7 +5,7 @@
 [![Code Climate](https://codeclimate.com/github/sensu-plugins/sensu-plugins-docker/badges/gpa.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-docker)
 [![Test Coverage](https://codeclimate.com/github/sensu-plugins/sensu-plugins-docker/badges/coverage.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-docker)
 [![Dependency Status](https://gemnasium.com/sensu-plugins/sensu-plugins-docker.svg)](https://gemnasium.com/sensu-plugins/sensu-plugins-docker)
-[ ![Codeship Status for sensu-plugins/sensu-plugins-dns](https://codeship.com/projects/2f39b7d0-d5af-0132-5eda-2a31c2fb7a04/status?branch=master)](https://codeship.com/projects/78143)
+[ ![Codeship Status for sensu-plugins/sensu-plugins-docker](https://codeship.com/projects/680bcc80-e24b-0132-265c-4ea0dd54b93d/status?branch=master)](https://codeship.com/projects/81436)
 
 ## Functionality
 
