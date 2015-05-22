@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.signing_key            = File.expand_path(pvt_key) if $PROGRAM_NAME =~ /gem\z/
   s.summary                = 'Sensu plugins for docker'
   s.test_files             = s.files.grep(%r{^(test|spec|features)/})
-  s.version                = SensuPluginsDocker::version::VER_STRING
+  s.version                = SensuPluginsDocker::Version::VER_STRING
 
   s.add_runtime_dependency 'docker',       '0.0.1'
   s.add_runtime_dependency 'sensu-plugin', '1.1.0'
