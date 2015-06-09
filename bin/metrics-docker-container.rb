@@ -49,7 +49,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'docker host',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
-         default: 'tcp://127.0.1.1:4243'
+         default: 'tcp://127.0.1.1:2376'
 
   def run
     container_metrics
