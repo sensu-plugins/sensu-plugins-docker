@@ -38,7 +38,7 @@ require 'docker'
 class CheckDockerContainers < Sensu::Plugin::Check::CLI
   option :url,
          short: '-u docker host',
-         default: 'http://127.0.0.1:4243/'
+         default: 'http://127.0.0.1:2376/'
 
   option :warn_over,
          short: '-w N',
