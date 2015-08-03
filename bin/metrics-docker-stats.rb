@@ -138,7 +138,6 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     end
   end
 
-
   def list_containers
     list = []
     path = 'containers/json'
@@ -158,5 +157,4 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     path = "containers/#{container}/stats"
     @stats = docker_api(path)
   end
-
 end
