@@ -62,30 +62,30 @@ class CheckDockerContainers < Sensu::Plugin::Check::CLI
   option :crit_under,
          short: '-C N',
          long: '--critical-under N',
-         description: 'Trigger a critial if under a number',
+         description: 'Trigger a critical if under a number',
          proc: proc(&:to_i),
          default: 1
 
   def run #rubocop:disable all
     Docker.url = "#{config[:url]}"
-    conn = Docker::Container.all(ruuning: true)
+    conn = Docker::Container.all(running: true)
     count = conn.size.to_i
-    puts "#{count} Running Containers..."
+    message "#{count} Running Containers..."
 
     # #YELLOW
     if !!config[:crit_under] && count < config[:crit_under] # rubocop:disable Style/DoubleNegation
-      puts critical
+      critical
     # #YELLOW
     elsif !!config[:crit_over] && count > config[:crit_over] # rubocop:disable Style/DoubleNegation
-      puts critical
+      critical
     # #YELLOW
     elsif !!config[:warn_under] && count < config[:warn_under] # rubocop:disable Style/DoubleNegation
-      puts warning
+      warning
     # #YELLOW
     elsif !!config[:warn_over] && count > config[:warn_over] # rubocop:disable Style/DoubleNegation
-      puts warning
+      warning
     else
-      puts ok
+      ok
     end
   end
 end

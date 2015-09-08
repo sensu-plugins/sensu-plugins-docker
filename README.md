@@ -10,7 +10,7 @@
 ## Functionality
 
 ## Files
- * check-contsainer.rb
+ * check-container.rb
  * check-docker-container.rb
  * metrics-docker-container.rb
 
