@@ -62,13 +62,13 @@ class CheckDockerContainers < Sensu::Plugin::Check::CLI
   option :crit_under,
          short: '-C N',
          long: '--critical-under N',
-         description: 'Trigger a critial if under a number',
+         description: 'Trigger a critical if under a number',
          proc: proc(&:to_i),
          default: 1
 
   def run #rubocop:disable all
     Docker.url = "#{config[:url]}"
-    conn = Docker::Container.all(ruuning: true)
+    conn = Docker::Container.all(running: true)
     count = conn.size.to_i
     message "#{count} Running Containers..."
 
