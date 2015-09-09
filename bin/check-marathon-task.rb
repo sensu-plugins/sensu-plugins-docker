@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby    
 #
 #   check-marathon-task
 #
@@ -36,10 +36,10 @@ require 'json'
 class MarathonTaskCheck < Sensu::Plugin::Check::CLI
   check_name 'CheckMarathonTask'
 
-  option :server, { short: '-s SERVER', long: '--server SERVER', required: true }
-  option :port, { short: '-p PORT', long: '--port PORT', :default => 8080 }
-  option :task, { short: '-t TASK', long: '--task TASK', required: true }
-  option :instances, { short: '-i INSTANCES', long: '--instances INSTANCES', required: true, proc: proc(&:to_i) }
+  option :server,  short: '-s SERVER', long: '--server SERVER', required: true
+  option :port, short: '-p PORT', long: '--port PORT', :default => 8080
+  option :task,  short: '-t TASK', long: '--task TASK', required: true
+  option :instances, short: '-i INSTANCES', long: '--instances INSTANCES', required: true, proc: proc(&:to_i)
 
   def run
     if config[:instances] == 0
