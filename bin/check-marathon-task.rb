@@ -34,17 +34,16 @@ require 'net/http'
 require 'json'
 
 class MarathonTaskCheck < Sensu::Plugin::Check::CLI
-
   check_name 'CheckMarathonTask'
 
-  option :server, :short => '-s SERVER', :long => '--server SERVER', :required => true
-  option :port, :short => '-p PORT', :long => '--port PORT', :default => 8080
-  option :task, :short => '-t TASK', :long => '--task TASK', :required => true
-  option :instances, :short => '-i INSTANCES', :long => '--instances INSTANCES', :required => true, :proc => proc(&:to_i)
+  option :server, { short: '-s SERVER', long: '--server SERVER', required: true }
+  option :port, { short: '-p PORT', long: '--port PORT', :default => 8080 }
+  option :task, { short: '-t TASK', long: '--task TASK', required: true }
+  option :instances, { short: '-i INSTANCES', long: '--instances INSTANCES', required: true, proc: proc(&:to_i) }
 
   def run
     if config[:instances] == 0
-      unknown "number of instances should be an integer"
+      unknown 'number of instances should be an integer'
     end
 
     failures = []
@@ -57,9 +56,9 @@ class MarathonTaskCheck < Sensu::Plugin::Check::CLI
           h.request(req)
         end
 
-        tasks = JSON.parse(r.body)["tasks"]
+        tasks = JSON.parse(r.body)['tasks']
         tasks.select! do |t|
-          t["appId"] == "/#{config[:task]}"
+          t['appId'] == "/#{config[:task]}"
         end
 
         message = "#{tasks.length}/#{config[:instances]} #{config[:task]} tasks running"
@@ -78,5 +77,4 @@ class MarathonTaskCheck < Sensu::Plugin::Check::CLI
 
     unknown "marathon task state could not be retrieved:\n" << failures.join("\n")
   end
-
 end
