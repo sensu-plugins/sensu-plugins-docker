@@ -13,6 +13,7 @@
  * check-container.rb
  * check-docker-container.rb
  * metrics-docker-container.rb
+ * check-marathon-task.rb
 
 ## Usage
 
