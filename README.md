@@ -11,6 +11,7 @@
 
 ## Files
  * check-container.rb
+ * check-container-logs.rb 
  * check-docker-container.rb
  * metrics-docker-container.rb
 
