@@ -36,45 +36,43 @@ require 'net_http_unix'
 require 'json'
 
 class ContainerLogChecker < Sensu::Plugin::Check::CLI
-
-  $red_flags = []
-  $white_flags = []
-
   option :docker_host,
-    description: 'location of docker api, host:port or /path/to/docker.sock',
-    short: '-H DOCKER_HOST',
-    long: '--docker-host DOCKER_HOST',
-    default: '127.0.0.1:2375'
+         description: 'location of docker api, host:port or /path/to/docker.sock',
+         short: '-H DOCKER_HOST',
+         long: '--docker-host DOCKER_HOST',
+         default: '127.0.0.1:2375'
 
   option :docker_protocol,
-    description: 'http or unix',
-    short: '-p PROTOCOL',
-    long: '--protocol PROTOCOL',
-    default: 'http'
+         description: 'http or unix',
+         short: '-p PROTOCOL',
+         long: '--protocol PROTOCOL',
+         default: 'http'
 
   option :container,
-    description: 'name of container',
-    short: '-n CONTAINER',
-    long: '--container-name CONTAINER',
-    required: true
+         description: 'name of container',
+         short: '-n CONTAINER',
+         long: '--container-name CONTAINER',
+         required: true
 
   option :red_flags,
-    description: 'substring whose presence (case-insensitive by default) in a log line indicates an error; can be used multiple times',
-    short: '-r "error occurred" -r "problem encountered" -r "error status"',
-    long: '--red-flag "error occurred" --red-flag "problem encountered" --red-flag "error status"',
-    proc: Proc.new { |flag| $red_flags << flag }
+         description: 'substring whose presence (case-insensitive by default) in a log line indicates an error; can be used multiple times',
+         short: '-r "error occurred" -r "problem encountered" -r "error status"',
+         long: '--red-flag "error occurred" --red-flag "problem encountered" --red-flag "error status"',
+         default: [],
+         proc: proc { |flag| (@options[:red_flags][:accumulated] ||= []).push(flag) }
 
   option :ignore_list,
-    description: 'substring whose presence (case-insensitive by default) in a log line indicates the line should be ignored; can be used multiple times',
-    short: '-i "configuration:" -i "# Remark:"',
-    long: '--ignore-lines-with "configuration:" --ignore-lines-with "# remark:"',
-    proc: Proc.new { |flag| $white_flags << flag }
+         description: 'substring whose presence (case-insensitive by default) in a log line indicates the line should be ignored; can be used multiple times',
+         short: '-i "configuration:" -i "# Remark:"',
+         long: '--ignore-lines-with "configuration:" --ignore-lines-with "# remark:"',
+         default: [],
+         proc: proc { |flag| (@options[:ignore_list][:accumulated] ||= []).push(flag) }
 
   option :case_sensitive,
-    description: 'indicates all red_flag and ignore_list substring matching should be case-sensitive instead of the default case-insensitive',
-    short: '-c',
-    long: '--case-sensitive',
-    boolean: true
+         description: 'indicates all red_flag and ignore_list substring matching should be case-sensitive instead of the default case-insensitive',
+         short: '-c',
+         long: '--case-sensitive',
+         boolean: true
 
   def process_docker_logs(containerName)
     path = "containers/#{containerName}/attach?logs=1&stream=0&stdout=1&stderr=1"
@@ -94,36 +92,36 @@ class ContainerLogChecker < Sensu::Plugin::Check::CLI
   def remove_headers(raw_logs)
     lines = raw_logs.split("\n")
     lines.map! { |line| line.byteslice(8, line.bytesize) }
-    return lines.join("\n")
+    lines.join("\n")
   end
 
-  def includesAny?(str, arrayOfSubstrings)
+  def includes_any?(str, arrayOfSubstrings)
     arrayOfSubstrings.each do |substring|
-      if str.include? substring then return true end
+      return true if str.include? substring
     end
-    return false
+    false
   end
 
   def detect_problem(logs)
-    whiteflags = $white_flags
-    redflags = $red_flags
-    if !config[:case_sensitive]
+    whiteflags = config[:ignore_list]
+    redflags = config[:red_flags]
+    unless config[:case_sensitive]
       logs = logs.downcase
-      whiteflags.map!{ |f| f.downcase }
-      redflags.map!{ |f| f.downcase }
+      whiteflags.map!(&:downcase)
+      redflags.map!(&:downcase)
     end
 
     logs.split("\n").each do |line|
-      if (!includesAny?(line, whiteflags) && includesAny?(line, redflags)) then return line end
+      return line if !includes_any?(line, whiteflags) && includes_any?(line, redflags)
     end
-    return nil
+    nil
   end
 
   def run
     container = config[:container]
     process_docker_logs(container) do |log_chunk|
       problem = detect_problem log_chunk
-      if !problem.nil? then critical "#{container} container logs indicate problem: '#{problem}'." end
+      critical "#{container} container logs indicate problem: '#{problem}'." unless problem.nil?
     end
     ok "No errors detected from #{container} container logs."
   end
