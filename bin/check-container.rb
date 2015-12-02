@@ -14,7 +14,6 @@
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
-#   gem: docker
 #
 # USAGE:
 #   check-docker-container.rb c92d402a5d14
@@ -37,33 +36,40 @@
 #
 
 require 'sensu-plugin/check/cli'
-require 'docker'
+require 'sensu-plugins-docker/client_helpers'
+require 'json'
 
 #
-# Check Docker Conatiner
+# Check Docker Container
 #
 class CheckDockerContainer < Sensu::Plugin::Check::CLI
-  option :url,
-         short: '-u DOCKER_HOST',
+  option :docker_host,
+         short: '-h DOCKER_HOST',
          long: '--host DOCKER_HOST',
-         default: 'tcp://127.0.0.1:2376/'
+         default: '127.0.0.1:2375'
+  option :container,
+         short: '-c CONTAINER',
+         long: '--container CONTAINER',
+         required: true
 
-  def run #rubocop:disable all
-    Docker.url = "#{config[:url]}"
+  def run
+    client = create_docker_client
+    path = "/containers/#{config[:container]}/json"
+    req = Net::HTTP::Get.new path
+    begin
+      response = client.request(req)
+      if response.body.include? 'no such id'
+        critical "#{config[:container]} is not running on #{config[:docker_host]}"
+      end
 
-    id = argv.first
-    container = Docker::Container.get(id)
-
-    if container.info['State']['Running']
-      ok
-    else
-      critical "#{id} is not running"
+      container_info = JSON.parse(response.body)
+      if container_info['State']['Status'] == 'running'
+        ok "#{config[:container]} is running on #{config[:docker_host]}."
+      end
+    rescue JSON::ParserError => e
+      critical "JSON Error: #{e.inspect}"
+    rescue => e
+      warning "Error: #{e.inspect}"
     end
-  rescue Docker::Error::NotFoundError
-    critical "#{id} is not running on the host"
-  rescue Excon::Errors::SocketError
-    warning 'unable to connect to Docker'
-  rescue => e
-    warning "unknown error #{e.inspect}"
   end
 end
