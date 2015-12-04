@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## Unreleased
+### Added
+- Added check-container-logs.rb to check docker logs for matching strings 
+
+### Changed
+- check-docker-container.rb: output the number of running containers
 
 ## [0.0.4] - 2015-08-10
 ### Changed
