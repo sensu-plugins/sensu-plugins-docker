@@ -103,11 +103,11 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     end
   end
 
-  def docker_api(path, full_body=false)
+  def docker_api(path, full_body = false)
     begin
       if config[:docker_protocol] == 'unix'
         request = Net::HTTP::Get.new "/#{path}"
-        NetX::HTTPUnix.start("unix://#{config[:docker_host]}") do | http |
+        NetX::HTTPUnix.start("unix://#{config[:docker_host]}") do |http|
           get_response(full_body, http, request)
         end
 
@@ -116,15 +116,15 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
 
         request = Net::HTTP::Get.new uri.request_uri
-        Net::HTTP.start(uri.host, uri.port) do | http |
+        Net::HTTP.start(uri.host, uri.port) do |http|
           get_response(full_body, http, request)
         end
       end
 
 
     rescue NoMethodError
-        # using http.finish to prematurely kill the stream causes this exception.
-        return @response
+      # using http.finish to prematurely kill the stream causes this exception.
+      return @response
 
     end
   end
