@@ -55,7 +55,8 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'cgroup_template',
          short: '-T <template string>',
          long: '--cgroup-template template_string',
-         default: 'cpu/docker/%s/cgroup.procs'
+         default: 'cpu/docker/%{container}/cgroup.procs'
+         #default: 'cpu/system.slice/docker-%{container}.scope/cgroup.procs'
 
   def run
     container_metrics
@@ -76,8 +77,9 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
     containers = `docker ps --quiet --no-trunc`.split("\n")
 
     containers.each do |container|
-      cgroup_path = Pathname(cgroup % [container])
-      pids = cgroup_path.readlines.map(&:to_i)
+      path = Pathname( format(cgroup, container: container))
+      #pids = cgroup.join(container).join('.scope/cgroup.procs').readlines.map(&:to_i)
+      pids = path.readlines.map(&:to_i)
 
       processes = ps.values_at(*pids).flatten.compact.group_by(&:comm)
       processes2 = ps2.values_at(*pids).flatten.compact.group_by(&:comm)
