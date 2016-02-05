@@ -101,7 +101,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     dotted_stats.each do |key, value|
       next if key == 'read' # unecessary timestamp
       next if key.start_with? 'blkio_stats' # array values, figure out later
-      output "#{config[:scheme]}.#{image}.#{container}.#{key}", value, @timestamp
+      output "#{config[:scheme]}.#{image}.#{container}[0..12].#{key}", value, @timestamp
     end
   end
 
