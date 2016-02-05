@@ -96,12 +96,11 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
   def output_stats(container, stats)
     image = `docker inspect -f {{.Config.Image}} #{container}`.gsub(/.*?\//,'').gsub(/:.*/,'')
- 
     dotted_stats = Hash.to_dotted_hash stats
     dotted_stats.each do |key, value|
       next if key == 'read' # unecessary timestamp
       next if key.start_with? 'blkio_stats' # array values, figure out later
-      output "#{config[:scheme]}.#{image}.#{container}[0..12].#{key}", value, @timestamp
+      output "#{config[:scheme]}.#{image}.#{container[0..12]}.#{key}", value, @timestamp
     end
   end
 
