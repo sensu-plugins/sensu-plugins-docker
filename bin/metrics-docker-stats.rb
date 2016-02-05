@@ -64,13 +64,13 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'location of docker api, host:port or /path/to/docker.sock',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
-         default: '127.0.0.1:2375'
+         default: '/var/run/docker.sock'
 
   option :docker_protocol,
          description: 'http or unix',
          short: '-p PROTOCOL',
          long: '--protocol PROTOCOL',
-         default: 'http'
+         default: 'unix'
 
   option :friendly_names,
          description: 'use friendly name if available',
@@ -95,11 +95,13 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   def output_stats(container, stats)
+    image = `docker inspect -f {{.Config.Image}} #{container}`.gsub(/.*?\//,'').gsub(/:.*/,'')
+ 
     dotted_stats = Hash.to_dotted_hash stats
     dotted_stats.each do |key, value|
       next if key == 'read' # unecessary timestamp
       next if key.start_with? 'blkio_stats' # array values, figure out later
-      output "#{config[:scheme]}.#{container}.#{key}", value, @timestamp
+      output "#{config[:scheme]}.#{image}.#{container}.#{key}", value, @timestamp
     end
   end
 
