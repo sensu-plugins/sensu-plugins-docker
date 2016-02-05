@@ -77,7 +77,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
       processes2 = ps2.values_at(*pids).flatten.compact.group_by(&:comm)
 
       processes.each do |comm, process|
-        prefix = "#{config[:scheme]}.#{image}.#{container}[0..12].#{comm}"
+        prefix = "#{config[:scheme]}.#{image}.#{container[0..12]}.#{comm}"
         fields.each do |field|
           output "#{prefix}.#{field}", process.map(&field).reduce(:+), timestamp
         end
