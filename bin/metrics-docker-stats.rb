@@ -65,11 +65,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
          default: '127.0.0.1:2375',
-         proc: proc do |v|
-           v.slice! 'tcp://'
-           v.slice! 'unix://'
-           v
-         end
+         proc: proc { |v|  v.gsub('tcp://', '').gsub('unix://', '') }
 
   option :docker_protocol,
          description: 'http or unix',
