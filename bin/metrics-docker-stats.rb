@@ -64,7 +64,12 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'location of docker api, host:port or /path/to/docker.sock',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
-         default: '127.0.0.1:2375'
+         default: '127.0.0.1:2375',
+         proc: Proc.new { |v| 
+          v.slice! 'tcp://' 
+          v.slice! 'unix://'
+          v
+         }
 
   option :docker_protocol,
          description: 'http or unix',
