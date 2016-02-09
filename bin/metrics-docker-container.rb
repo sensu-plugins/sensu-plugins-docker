@@ -70,7 +70,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
     containers = `docker ps --quiet --no-trunc`.split("\n")
 
     containers.each do |container|
-      image = `docker inspect -f {{.Config.Image}} #{container}`.gsub(/.*?\//,'').gsub(/:.*/,'')
+      image = `docker inspect -f {{.Config.Image}} #{container}`.gsub(/.*?\//,'').gsub(/:.*/,'').strip
       pids = cgroup.join(container).join('cgroup.procs').readlines.map(&:to_i)
 
       processes = ps.values_at(*pids).flatten.compact.group_by(&:comm)

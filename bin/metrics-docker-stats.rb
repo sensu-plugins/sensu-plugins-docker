@@ -95,7 +95,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   def output_stats(container, stats)
-    image = `docker inspect -f {{.Config.Image}} #{container}`.gsub(/.*?\//,'').gsub(/:.*/,'')
+    image = `docker inspect -f {{.Config.Image}} #{container}`.gsub(/.*?\//,'').gsub(/:.*/,'').strip
     dotted_stats = Hash.to_dotted_hash stats
     dotted_stats.each do |key, value|
       next if key == 'read' # unecessary timestamp
