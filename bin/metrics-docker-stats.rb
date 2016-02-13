@@ -141,9 +141,10 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
   def list_containers
     list = []
-    path = 'containers/json'
+    path = 'containers/json?format=\'{{.Id}}\''
     @containers = docker_api(path)
 
+    put_s "containers = #{@containers}"
     @containers.each do |container|
       if config[:friendly_names]
         list << container['Names'][0].gsub('/', '')
