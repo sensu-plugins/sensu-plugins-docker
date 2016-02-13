@@ -104,6 +104,27 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     end
   end
 
+  def docker_api_no_stream(path)
+    if config[:docker_protocol] == 'unix'
+      NetX::HTTPUnix.start("unix://#{config[:docker_host]}") do |http|
+        request = Net::HTTP::Get.new "/#{path}"
+        http.request request do |response|
+          @response = JSON.parse(response.body)
+        end
+      end
+      return @response
+    else
+      uri = URI("#{config[:docker_protocol]}://#{config[:docker_host]}/#{path}")
+      Net::HTTP.start(uri.host, uri.port) do |http|
+        request = Net::HTTP::Get.new uri.request_uri
+        http.request request do |response|
+          @response = JSON.parse(response.body)
+        end
+      end
+      return @response
+    end
+  end
+
   def docker_api(path)
     if config[:docker_protocol] == 'unix'
       begin
@@ -142,9 +163,8 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   def list_containers
     list = []
     path = 'containers/json?format=\'{{.Id}}\''
-    @containers = docker_api(path)
+    @containers = docker_api_no_stream(path)
 
-    put_s "containers = #{@containers}"
     @containers.each do |container|
       if config[:friendly_names]
         list << container['Names'][0].gsub('/', '')
