@@ -82,11 +82,11 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   def run
     @timestamp = Time.now.to_i
 
-    if config[:container] != ''
-      list = [config[:container]]
-    else
-      list = list_containers
-    end
+    list = if config[:container] != ''
+             [config[:container]]
+           else
+             list_containers
+           end
     list.each do |container|
       stats = container_stats(container)
       output_stats(container, stats)
@@ -144,11 +144,11 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     @containers = docker_api(path)
 
     @containers.each do |container|
-      if config[:friendly_names]
-        list << container['Names'][0].gsub('/', '')
-      else
-        list << container['Id']
-      end
+      list << if config[:friendly_names]
+                container['Names'][0].delete('/')
+              else
+                container['Id']
+              end
     end
     list
   end

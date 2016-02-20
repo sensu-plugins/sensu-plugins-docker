@@ -89,6 +89,7 @@ insensitive',
       path = "#{path}&since=#{calculate_timestamp config[:hours_ago]}"
     end
     req = Net::HTTP::Get.new path
+
     client.request req do |response|
       response.read_body do |chunk|
         yield remove_headers chunk
