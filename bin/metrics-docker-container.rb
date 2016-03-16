@@ -49,7 +49,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'docker host',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
-         default: 'tcp://127.0.1.1:2376'
+         default: 'unix:///var/run/docker.sock'
 
   def run
     container_metrics
@@ -70,13 +70,14 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
     containers = `docker ps --quiet --no-trunc`.split("\n")
 
     containers.each do |container|
+      image = `docker inspect -f {{.Config.Image}} #{container}`.gsub(/.*?\//,'').gsub(/:.*/,'').strip
       pids = cgroup.join(container).join('cgroup.procs').readlines.map(&:to_i)
 
       processes = ps.values_at(*pids).flatten.compact.group_by(&:comm)
       processes2 = ps2.values_at(*pids).flatten.compact.group_by(&:comm)
 
       processes.each do |comm, process|
-        prefix = "#{config[:scheme]}.#{container}.#{comm}"
+        prefix = "#{config[:scheme]}.#{image}.#{container[0..12]}.#{comm}"
         fields.each do |field|
           output "#{prefix}.#{field}", process.map(&field).reduce(:+), timestamp
         end
