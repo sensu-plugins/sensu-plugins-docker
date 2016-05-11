@@ -7,11 +7,11 @@ def create_docker_client
     client = NetX::HTTPUnix.new(host)
   else
     split_host = config[:docker_host].split ':'
-    if split_host.length == 2
-      client = NetX::HTTPUnix.new(split_host[0], split_host[1])
-    else
-      client = NetX::HTTPUnix.new(config[:docker_host], 2375)
-    end
+    client = if split_host.length == 2
+               NetX::HTTPUnix.new(split_host[0], split_host[1])
+             else
+               NetX::HTTPUnix.new(config[:docker_host], 2375)
+             end
   end
 
   client
