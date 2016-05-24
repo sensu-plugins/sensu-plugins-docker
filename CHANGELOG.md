@@ -4,11 +4,23 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## 1.0.0 - 2016-05-24
+Note: this release changes how connections are made to the Docker API and also
+changes some options. Review your check commands before deploying this version.
+
 ### Added
 - Added check-container-logs.rb to check docker logs for matching strings 
+- Support for Ruby 2.3.0
+- metrics-docker-container.rb: add option to override the default path to cgroup.proc
+
+### Removed
+- Support for Ruby 1.9.3
 
 ### Changed
 - check-docker-container.rb: output the number of running containers
+- Refactor to connect to the Docker API socket directly instead of using the `docker` or `docker-api` gems
+- Update to rubocop 0.40 and cleanup
 
 ## [0.0.4] - 2015-08-10
 ### Changed
@@ -30,7 +42,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.4...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.4...1.0.0
 [0.0.4]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.2...0.0.3
 [0.0.2]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.1...0.0.2
