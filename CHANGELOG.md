@@ -5,7 +5,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## [Unreleased]
 
-## 1.0.0 - 2016-05-24
+## [1.0.0] - 2016-05-24
 Note: this release changes how connections are made to the Docker API and also
 changes some options. Review your check commands before deploying this version.
 
