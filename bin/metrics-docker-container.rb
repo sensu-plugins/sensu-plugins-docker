@@ -51,13 +51,19 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
          long: '--docker-host DOCKER_HOST',
          default: 'tcp://127.0.1.1:2376'
 
+  option :cgroup_template,
+         description: 'cgroup_template',
+         short: '-T <template string>',
+         long: '--cgroup-template template_string',
+         default: 'cpu/docker/%{container}/cgroup.procs'
+
   def run
     container_metrics
     ok
   end
 
   def container_metrics #rubocop:disable all
-    cgroup = Pathname(config[:cgroup_path]).join('cpu/docker')
+    cgroup = "#{config[:cgroup_path]}/#{config[:cgroup_template]}"
 
     timestamp = Time.now.to_i
     ps = Sys::ProcTable.ps.group_by(&:pid)
@@ -70,7 +76,8 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
     containers = `docker ps --quiet --no-trunc`.split("\n")
 
     containers.each do |container|
-      pids = cgroup.join(container).join('cgroup.procs').readlines.map(&:to_i)
+      path = Pathname(format(cgroup, container: container))
+      pids = path.readlines.map(&:to_i)
 
       processes = ps.values_at(*pids).flatten.compact.group_by(&:comm)
       processes2 = ps2.values_at(*pids).flatten.compact.group_by(&:comm)
