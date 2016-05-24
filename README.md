@@ -13,6 +13,7 @@
  * check-container-logs.rb 
  * check-docker-container.rb
  * metrics-docker-container.rb
+ * metrics-docker-stats.rb
 
 ## Usage
 
