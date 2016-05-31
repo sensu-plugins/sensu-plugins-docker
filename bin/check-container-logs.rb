@@ -77,8 +77,14 @@ insensitive',
          long: '--hours-ago HOURS',
          required: false
 
-  def calculate_timestamp(hours)
-    seconds_ago = hours.to_i * 3600
+  option :seconds_ago,
+         description: 'Amount of time in seconds to look back for log strings',
+         short: '-s SECONDS',
+         long: '--seconds-ago SECONDS',
+         required: false
+
+  def calculate_timestamp(seconds_ago = nil)
+    seconds_ago = yield if block_given?
     (Time.now - seconds_ago).to_i
   end
 
@@ -86,8 +92,11 @@ insensitive',
     client = create_docker_client
     path = "/containers/#{container_name}/logs?stdout=true&stderr=true"
     if config.key? :hours_ago
-      path = "#{path}&since=#{calculate_timestamp config[:hours_ago]}"
+      timestamp = calculate_timestamp { config[:hours_ago].to_i * 3600 }
+    elsif config.key? :seconds_ago
+      timestamp = calculate_timestamp config[:seconds_ago].to_i
     end
+    path = "#{path}&since=#{timestamp}"
     req = Net::HTTP::Get.new path
 
     client.request req do |response|
