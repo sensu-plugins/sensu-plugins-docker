@@ -10,7 +10,7 @@ Note: this release changes how connections are made to the Docker API and also
 changes some options. Review your check commands before deploying this version.
 
 ### Added
-- Added check-container-logs.rb to check docker logs for matching strings 
+- Added check-container-logs.rb to check docker logs for matching strings
 - Support for Ruby 2.3.0
 - metrics-docker-container.rb: add option to override the default path to cgroup.proc
 
@@ -21,6 +21,7 @@ changes some options. Review your check commands before deploying this version.
 - check-docker-container.rb: output the number of running containers
 - Refactor to connect to the Docker API socket directly instead of using the `docker` or `docker-api` gems
 - Update to rubocop 0.40 and cleanup
+- check-container-logs.rb: added `-s|--seconds-ago` option to be able to set time interval more precisely
 
 ## [0.0.4] - 2015-08-10
 ### Changed
