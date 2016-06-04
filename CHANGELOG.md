@@ -5,6 +5,10 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## [Unreleased]
 
+## [1.1.0] - 2016-06-03
+### Added
+- check-container-logs.rb: added `-s|--seconds-ago` option to be able to set time interval more precisely
+
 ## [1.0.0] - 2016-05-24
 Note: this release changes how connections are made to the Docker API and also
 changes some options. Review your check commands before deploying this version.
@@ -21,7 +25,6 @@ changes some options. Review your check commands before deploying this version.
 - check-docker-container.rb: output the number of running containers
 - Refactor to connect to the Docker API socket directly instead of using the `docker` or `docker-api` gems
 - Update to rubocop 0.40 and cleanup
-- check-container-logs.rb: added `-s|--seconds-ago` option to be able to set time interval more precisely
 
 ## [0.0.4] - 2015-08-10
 ### Changed
@@ -43,7 +46,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.4...1.0.0
 [0.0.4]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.2...0.0.3
