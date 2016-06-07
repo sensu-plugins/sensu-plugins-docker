@@ -5,7 +5,7 @@
 # DESCRIPTION:
 #
 # Supports the stats feature of the docker remote api ( docker server 1.5 and newer )
-# Currently only supports when docker is listening on tcp port.
+# Supports connecting to docker remote API over Unix socket or TCP
 #
 #
 # OUTPUT:
