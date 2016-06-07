@@ -18,7 +18,16 @@
 #   gem: sensu-plugin
 #
 # USAGE:
-#   #YELLOW
+#   Gather stats from all containers on a host using socket:
+#   metrics-docker-stats.rb -p unix -H /var/run/docker.sock
+#
+#   Gather stats from all containers on a host using TCP:
+#   metrics-docker-stats.rb -p http -H localhost:2375
+#
+#   Gather stats from a specific container using socket:
+#   metrics-docker-stats.rb -p unix -H /var/run/docker.sock -c 5bf1b82382eb
+#
+#   See metrics-docker-stats.rb --help for full usage flags
 #
 # NOTES:
 #
