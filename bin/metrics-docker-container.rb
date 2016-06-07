@@ -46,7 +46,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
          default: '/sys/fs/cgroup'
 
   option :docker_host,
-         description: 'docker host',
+         description: 'Docker host. TCP: "tcp://host:port" or Unix: "unix:///path/to/docker.sock" (default: "tcp://127.0.1.1:2376")',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
          default: 'tcp://127.0.1.1:2376'
