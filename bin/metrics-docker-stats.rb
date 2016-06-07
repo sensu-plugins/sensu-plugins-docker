@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-#   docker-container-metrics
+#   metrics-docker-stats
 #
 # DESCRIPTION:
 #
