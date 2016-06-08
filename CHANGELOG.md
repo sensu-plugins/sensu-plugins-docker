@@ -5,7 +5,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## [Unreleased]
 ### Fixed
-- metrics-docker-stats.rb: Fix error from trying to collect stats with multiple values (#29)
+- metrics-docker-stats.rb: Fix error from trying to collect stats with multiple values. Stats that return array values are now excluded. (#29)
 
 ## [1.1.0] - 2016-06-03
 ### Added
