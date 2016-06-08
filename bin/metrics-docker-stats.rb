@@ -1,11 +1,11 @@
 #! /usr/bin/env ruby
 #
-#   docker-container-metrics
+#   metrics-docker-stats
 #
 # DESCRIPTION:
 #
 # Supports the stats feature of the docker remote api ( docker server 1.5 and newer )
-# Currently only supports when docker is listening on tcp port.
+# Supports connecting to docker remote API over Unix socket or TCP
 #
 #
 # OUTPUT:
@@ -18,7 +18,16 @@
 #   gem: sensu-plugin
 #
 # USAGE:
-#   #YELLOW
+#   Gather stats from all containers on a host using socket:
+#   metrics-docker-stats.rb -p unix -H /var/run/docker.sock
+#
+#   Gather stats from all containers on a host using TCP:
+#   metrics-docker-stats.rb -p http -H localhost:2375
+#
+#   Gather stats from a specific container using socket:
+#   metrics-docker-stats.rb -p unix -H /var/run/docker.sock -c 5bf1b82382eb
+#
+#   See metrics-docker-stats.rb --help for full usage flags
 #
 # NOTES:
 #
@@ -28,7 +37,6 @@
 #   for details.
 #
 
-require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/metric/cli'
 require 'socket'
 require 'net_http_unix'
@@ -98,7 +106,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     dotted_stats = Hash.to_dotted_hash stats
     dotted_stats.each do |key, value|
       next if key == 'read' # unecessary timestamp
-      next if key.start_with? 'blkio_stats' # array values, figure out later
+      next if value.is_a?(Array)
       output "#{config[:scheme]}.#{container}.#{key}", value, @timestamp
     end
   end
