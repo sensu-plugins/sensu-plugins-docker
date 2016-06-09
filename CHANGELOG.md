@@ -7,6 +7,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Fixed
 - metrics-docker-stats.rb: Fix error from trying to collect stats with multiple values. Stats that return array values are now excluded. (#29)
 
+### Changed
+- improved help messages
+
 ## [1.1.0] - 2016-06-03
 ### Added
 - check-container-logs.rb: added `-s|--seconds-ago` option to be able to set time interval more precisely

@@ -46,6 +46,7 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
   option :docker_host,
          short: '-h DOCKER_HOST',
          long: '--host DOCKER_HOST',
+         description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
          default: '127.0.0.1:2375'
   option :container,
          short: '-c CONTAINER',

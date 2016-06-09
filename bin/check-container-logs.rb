@@ -37,7 +37,7 @@ require 'sensu-plugins-docker/client_helpers'
 
 class ContainerLogChecker < Sensu::Plugin::Check::CLI
   option :docker_host,
-         description: 'location of docker api: host:port or /path/to/docker.sock',
+         description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
          default: '127.0.0.1:2375'
