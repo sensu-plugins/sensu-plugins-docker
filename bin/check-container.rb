@@ -63,9 +63,11 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
         critical "#{config[:container]} is not running on #{config[:docker_host]}"
       end
 
-      container_info = JSON.parse(response.body)
-      if container_info['State']['Status'] == 'running'
+      container_state = JSON.parse(response.body)['State']['Status']
+      if container_state == 'running'
         ok "#{config[:container]} is running on #{config[:docker_host]}."
+      else
+        critical "#{config[:container]} is #{container_state} on #{config[:docker_host]}."
       end
     rescue JSON::ParserError => e
       critical "JSON Error: #{e.inspect}"
