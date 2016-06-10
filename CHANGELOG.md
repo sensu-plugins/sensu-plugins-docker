@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## [1.1.1] - 2016-06-10
 ### Fixed
 - metrics-docker-stats.rb: Fix error from trying to collect stats with multiple values. Stats that return array values are now excluded. (#29)
 
@@ -52,7 +54,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.1...HEAD
+[1.1.1]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.4...1.0.0
 [0.0.4]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/0.0.3...0.0.4
