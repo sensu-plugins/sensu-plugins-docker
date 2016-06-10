@@ -9,6 +9,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ### Changed
 - improved help messages
+- check-container.rb: issue a critical event if container state != running
 
 ## [1.1.0] - 2016-06-03
 ### Added
@@ -30,7 +31,6 @@ changes some options. Review your check commands before deploying this version.
 - check-docker-container.rb: output the number of running containers
 - Refactor to connect to the Docker API socket directly instead of using the `docker` or `docker-api` gems
 - Update to rubocop 0.40 and cleanup
-- check-container.rb: issue a critical event if container state 1= running
 
 ## [0.0.4] - 2015-08-10
 ### Changed
