@@ -22,3 +22,5 @@
 [Installation and Setup](http://sensu-plugins.io/docs/installation_instructions.html)
 
 ## Notes
+
+To connect using an TLS/SSL connection, set the environment variable SSL_CERT to a certificate file, and SSL_KEY to a key file.
