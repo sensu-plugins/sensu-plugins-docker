@@ -1,4 +1,5 @@
 require 'net_http_unix'
+require 'net/https'
 
 def create_docker_client
   client = nil
@@ -12,6 +13,12 @@ def create_docker_client
              else
                NetX::HTTPUnix.new(config[:docker_host], 2375)
              end
+    if ENV['SSL_KEY'] != nil and ENV['SSL_CERT'] != nil
+      client.use_ssl = true
+      client.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      client.cert = OpenSSL::X509::Certificate.new File.read ENV['SSL_CERT']
+      client.key = OpenSSL::PKey::RSA.new File.read ENV['SSL_KEY']
+    end
   end
 
   client
