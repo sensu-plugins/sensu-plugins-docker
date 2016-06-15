@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## [Unreleased]
 
+- Add simple support for TLS connections to docker deamon. (#21)
+
 ## [1.1.1] - 2016-06-10
 ### Fixed
 - metrics-docker-stats.rb: Fix error from trying to collect stats with multiple values. Stats that return array values are now excluded. (#29)
