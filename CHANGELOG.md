@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Changed
+- dependencies: use sensu-plugin ~> 1.2.0, docker-api = 1.21.0
 
 ## [1.1.1] - 2016-06-10
 ### Fixed
