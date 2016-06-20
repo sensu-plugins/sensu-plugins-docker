@@ -35,8 +35,8 @@ Gem::Specification.new do |s|
   s.test_files             = s.files.grep(%r{^(test|spec|features)/})
   s.version                = SensuPluginsDocker::Version::VER_STRING
 
-  s.add_runtime_dependency 'docker-api',    '1.21'
-  s.add_runtime_dependency 'sensu-plugin',  '1.2.0'
+  s.add_runtime_dependency 'docker-api',    '1.21.0'
+  s.add_runtime_dependency 'sensu-plugin',  '~> 1.2.0'
   s.add_runtime_dependency 'sys-proctable', '0.9.8'
   s.add_runtime_dependency 'net_http_unix', '0.2.1'
 
