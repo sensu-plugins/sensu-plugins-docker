@@ -32,7 +32,7 @@ require 'sensu-plugin/check/cli'
 require 'sensu-plugins-docker/client_helpers'
 require 'json'
 #
-# Check Docker Conatiners
+# Check Docker Containers
 #
 class CheckDockerContainers < Sensu::Plugin::Check::CLI
   option :docker_host,
