@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'docker-api',    '1.21.0'
   s.add_runtime_dependency 'sensu-plugin',  '~> 1.2.0'
   s.add_runtime_dependency 'sys-proctable', '0.9.8'
-  s.add_runtime_dependency 'net_http_unix', '0.2.1'
+  s.add_runtime_dependency 'net_http_unix', '0.2.2'
 
   s.add_development_dependency 'bundler',                   '~> 1.7'
   s.add_development_dependency 'codeclimate-test-reporter', '~> 0.4'
