@@ -5,6 +5,11 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## [Unreleased]
 
+### Changed
+
+- dependencies: use net\_http\_unix = 0.2.2
+
+
 ## [1.1.2] - 2016-06-20
 ### Changed
 - dependencies: use sensu-plugin ~> 1.2.0, docker-api = 1.21.0
