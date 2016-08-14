@@ -72,7 +72,8 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
-         default: '127.0.0.1:2375'
+         default: '127.0.0.1:2375',
+         proc: proc { |v|  v.gsub('tcp://', '').gsub('unix://', '') }
 
   option :docker_protocol,
          description: 'http or unix',
@@ -111,45 +112,53 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     end
   end
 
-  def docker_api(path)
+  def docker_api(path, full_body = false)
     if config[:docker_protocol] == 'unix'
-      begin
-        NetX::HTTPUnix.start("unix://#{config[:docker_host]}") do |http|
-          request = Net::HTTP::Get.new "/#{path}"
-          http.request request do |response|
-            response.read_body do |chunk|
-              @response = JSON.parse(chunk)
-              http.finish
-            end
-          end
-        end
-      rescue NoMethodError
-        # using http.finish to prematurely kill the stream causes this exception.
-        return @response
+      request = Net::HTTP::Get.new "/#{path}"
+      NetX::HTTPUnix.start("unix://#{config[:docker_host]}") do |http|
+        get_response(full_body, http, request)
       end
     else
       uri = URI("#{config[:docker_protocol]}://#{config[:docker_host]}/#{path}")
-      begin
-        Net::HTTP.start(uri.host, uri.port) do |http|
-          request = Net::HTTP::Get.new uri.request_uri
-          http.request request do |response|
-            response.read_body do |chunk|
-              @response = JSON.parse(chunk)
-              http.finish
-            end
-          end
-        end
-      rescue NoMethodError
-        # using http.finish to prematurely kill the stream causes this exception.
-        return @response
+      request = Net::HTTP::Get.new uri.request_uri
+      Net::HTTP.start(uri.host, uri.port) do |http|
+        get_response(full_body, http, request)
       end
     end
+  end
+
+  def get_response(full_body, http, request)
+    if full_body
+      get_full_response(http, request)
+    else
+      get_single_chunk(http, request)
+    end
+  end
+
+  def get_full_response(http, request)
+    http.request request do |response|
+      @response = JSON.parse(response.read_body)
+    end
+    http.finish
+    @response
+  end
+
+  def get_single_chunk(http, request)
+    http.request request do |response|
+      response.read_body do |chunk|
+        @response = JSON.parse(chunk)
+        http.finish
+      end
+    end
+    rescue NoMethodError
+      # using http.finish to prematurely kill the stream causes this exception.
+      return @response
   end
 
   def list_containers
     list = []
     path = 'containers/json'
-    @containers = docker_api(path)
+    @containers = docker_api(path, true)
 
     @containers.each do |container|
       list << if config[:friendly_names]
