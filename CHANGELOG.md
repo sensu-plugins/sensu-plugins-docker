@@ -7,6 +7,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ### Changed
 - dependencies: use net\_http\_unix = 0.2.2
+- metrics-docker-stats.rb: Fix JSON parse error if there is more than one chunk
+  of response data needed to result in valid JSON because of large datasets.
+  (#18)
 
 ## [1.1.2] - 2016-06-20
 ### Changed
