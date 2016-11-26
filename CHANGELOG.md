@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Changed
+- Loosen `sensu-plugin` dependency to `~> 1.2` (#44)
 
 ## [1.1.4] - 2016-11-26
 ### Changed
