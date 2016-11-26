@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## [1.1.5] - 2016-11-26
 ### Changed
 - Loosen `sensu-plugin` dependency to `~> 1.2` (#44)
 
@@ -70,7 +72,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.4...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.5...HEAD
+[1.1.5]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.4...1.1.5
 [1.1.4]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.3...1.1.4
 [1.1.3]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.2...1.1.3
 [1.1.2]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.1...1.1.2
