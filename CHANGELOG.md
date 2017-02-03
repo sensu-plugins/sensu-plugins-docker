@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Changed
+- check-container.rb: add an option to test image's tag (@obazoud)
 
 ## [1.1.5] - 2016-11-26
 ### Changed
