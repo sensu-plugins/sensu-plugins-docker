@@ -52,6 +52,9 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
          short: '-c CONTAINER',
          long: '--container CONTAINER',
          required: true
+  option :tag,
+         short: '-t TAG',
+         long: '--tag TAG'
 
   def run
     client = create_docker_client
@@ -62,9 +65,16 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
       if response.body.include? 'no such id'
         critical "#{config[:container]} is not running on #{config[:docker_host]}"
       end
-
-      container_state = JSON.parse(response.body)['State']['Status']
+      body = JSON.parse(response.body)
+      container_state = body['State']['Status']
       if container_state == 'running'
+        if config[:tag]
+          image = body['Config']['Image']
+          match = image.match(/^(?:([^\/]+)\/)?(?:([^\/]+)\/)?([^@:\/]+)(?:[@:](.+))?$/)
+          unless match && match[4] == config[:tag]
+            critical "#{config[:container]}'s tag is '#{match[4]}', excepting '#{config[:tag]}'"
+          end
+        end
         ok "#{config[:container]} is running on #{config[:docker_host]}."
       else
         critical "#{config[:container]} is #{container_state} on #{config[:docker_host]}."
