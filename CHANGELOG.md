@@ -4,7 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
-### Changed
+
+## [1.2.0] - 2017-02-08
+### Added
 - check-container.rb: add an option to test image's tag (@obazoud)
 
 ## [1.1.5] - 2016-11-26
@@ -74,7 +76,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.5...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.5...1.2.0
 [1.1.5]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.4...1.1.5
 [1.1.4]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.3...1.1.4
 [1.1.3]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.1.2...1.1.3
