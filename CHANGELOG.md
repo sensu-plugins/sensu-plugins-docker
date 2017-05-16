@@ -5,6 +5,11 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## [Unreleased]
 
+## [1.2.1] - 2017-02-08
+### Added
+- metrics-docker-stats.rb: Add an option to ouput a position of the docker
+  container name using by splitting on a delimiter of the users choice.
+
 ## [1.2.0] - 2017-02-08
 ### Added
 - check-container.rb: add an option to test image's tag (@obazoud)
