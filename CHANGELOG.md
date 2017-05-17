@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Added
+- metrics-docker-stats.rb: Add an option to ouput a portion of the docker
+  container name using by splitting on a delimiter of the users choice.
 
 ## [1.2.0] - 2017-02-08
 ### Added
