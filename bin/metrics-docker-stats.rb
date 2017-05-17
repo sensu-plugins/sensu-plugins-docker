@@ -88,7 +88,8 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          default: false
 
   option :name_parts,
-         description: 'Partial names by spliting and returning at index(es). eg. -m 3,4 my-docker-container-process_name-b2ffdab8f1aceae85300 for process_name.b2ffdab8f1aceae85300',
+         description: 'Partial names by spliting and returning at index(es). \
+                       eg. -m 3,4 my-docker-container-process_name-b2ffdab8f1aceae85300 for process_name.b2ffdab8f1aceae85300',
          short: '-m index',
          long: '--match index'
 
