@@ -66,8 +66,8 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
         critical "#{config[:container]} is not running on #{config[:docker_host]}"
       end
       body = JSON.parse(response.body)
-      container_state = body['State']['Status']
-      if container_state == 'running'
+      container_running = body['State']['Running']
+      if container_running 
         if config[:tag]
           image = body['Config']['Image']
           match = image.match(/^(?:([^\/]+)\/)?(?:([^\/]+)\/)?([^@:\/]+)(?:[@:](.+))?$/)
