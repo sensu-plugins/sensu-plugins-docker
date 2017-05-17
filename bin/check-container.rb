@@ -67,7 +67,7 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
       end
       body = JSON.parse(response.body)
       container_running = body['State']['Running']
-      if container_running 
+      if container_running
         if config[:tag]
           image = body['Config']['Image']
           match = image.match(/^(?:([^\/]+)\/)?(?:([^\/]+)\/)?([^@:\/]+)(?:[@:](.+))?$/)
