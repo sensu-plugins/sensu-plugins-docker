@@ -87,6 +87,18 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          boolean: true,
          default: false
 
+  option :name_parts,
+         description: 'Partial names by spliting and returning at index(es). \
+                       eg. -m 3,4 my-docker-container-process_name-b2ffdab8f1aceae85300 for process_name.b2ffdab8f1aceae85300',
+         short: '-m index',
+         long: '--match index'
+
+  option :delim,
+         description: 'the deliminator to use with -m',
+         short: '-d',
+         long: '--deliminator',
+         default: '-'
+
   def run
     @timestamp = Time.now.to_i
 
@@ -97,7 +109,16 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
            end
     list.each do |container|
       stats = container_stats(container)
-      output_stats(container, stats)
+      if config[:name_parts]
+        scheme = ''
+        config[:name_parts].split(',').each do |key|
+          scheme << '.' unless scheme == ''
+          scheme << container.split(config[:delim])[key.to_i]
+        end
+      else
+        scheme = container
+      end
+      output_stats(scheme, stats)
     end
     ok
   end
@@ -136,6 +157,8 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
     @containers.each do |container|
       list << if config[:friendly_names]
+                container['Names'][0].delete('/')
+              elsif config[:name_parts]
                 container['Names'][0].delete('/')
               else
                 container['Id']
