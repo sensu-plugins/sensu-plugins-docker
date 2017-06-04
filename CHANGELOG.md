@@ -8,6 +8,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - metrics-docker-stats.rb: Add an option to ouput a portion of the docker
   container name using by splitting on a delimiter of the users choice.
 
+### Fixed
+- check-container.rb: Fix support for docker versions >= 1.18. The key-pair [State][Status] was replaced with [State][Running] and also logic was updated (#45) 
+
 ## [1.2.0] - 2017-02-08
 ### Added
 - check-container.rb: add an option to test image's tag (@obazoud)
