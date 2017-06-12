@@ -62,7 +62,7 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
     req = Net::HTTP::Get.new path
     begin
       response = client.request(req)
-      if response.body.include? 'no such id'
+      if response.code.to_i == 404
         critical "#{config[:container]} is not running on #{config[:docker_host]}"
       end
       body = JSON.parse(response.body)
@@ -77,7 +77,7 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
         end
         ok "#{config[:container]} is running on #{config[:docker_host]}."
       else
-        critical "#{config[:container]} is #{container_state} on #{config[:docker_host]}."
+        critical "#{config[:container]} is #{body['State']['Status']} on #{config[:docker_host]}."
       end
     rescue JSON::ParserError => e
       critical "JSON Error: #{e.inspect}"
