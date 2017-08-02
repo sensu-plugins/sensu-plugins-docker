@@ -99,6 +99,11 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          long: '--deliminator',
          default: '-'
 
+  option :environment_tags,
+         description: 'Name of environment variables on each container to be appended to metric name, separated by commas',
+         short: '-e ENVIRONMENT_VARIABLES',
+         long: '--environment-tags ENVIRONMENT_VARIABLES'
+
   def run
     @timestamp = Time.now.to_i
 
@@ -109,14 +114,17 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
            end
     list.each do |container|
       stats = container_stats(container)
+      scheme = ''
+      unless config[:environment_tags].nil?
+        scheme << container_tags(container)
+      end
       if config[:name_parts]
-        scheme = ''
         config[:name_parts].split(',').each do |key|
           scheme << '.' unless scheme == ''
           scheme << container.split(config[:delim])[key.to_i]
         end
       else
-        scheme = container
+        scheme << container
       end
       output_stats(scheme, stats)
     end
@@ -170,5 +178,16 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   def container_stats(container)
     path = "containers/#{container}/stats?stream=0"
     @stats = docker_api(path)
+  end
+
+  def container_tags(container)
+    tags = ''
+    path = "containers/#{container}/json"
+    @inspect = docker_api(path)
+    tag_list = config[:environment_tags].split(',')
+    tag_list.each do |value|
+      tags << @inspect['Config']['Env'].select { |tag| tag.to_s.match(/#{value}=/) }.first.gsub(/#{value}=/, '') + '.'
+    end
+    tags
   end
 end
