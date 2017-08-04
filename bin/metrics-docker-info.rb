@@ -42,19 +42,6 @@ require 'socket'
 require 'net_http_unix'
 require 'json'
 
-class Hash
-  def self.to_dotted_hash(hash, recursive_key = '')
-    hash.each_with_object({}) do |(k, v), ret|
-      key = recursive_key + k.to_s
-      if v.is_a? Hash
-        ret.merge! to_dotted_hash(v, key + '.')
-      else
-        ret[key] = v
-      end
-    end
-  end
-end
-
 class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option :scheme,
          description: 'Metric naming scheme, text to prepend to metric',
