@@ -104,6 +104,13 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          short: '-e ENVIRONMENT_VARIABLES',
          long: '--environment-tags ENVIRONMENT_VARIABLES'
 
+  option :ioinfo,
+         description: 'enable IO Docker metrics',
+         short: '-i',
+         long: '--ioinfo',
+         boolean: true,
+         default: false
+
   def run
     @timestamp = Time.now.to_i
 
@@ -137,6 +144,11 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
       next if key == 'read' # unecessary timestamp
       next if value.is_a?(Array)
       output "#{config[:scheme]}.#{container}.#{key}", value, @timestamp
+    end
+    if config[:ioinfo]
+      blkio_stats(stats['blkio_stats']).each do |key, value|
+        output "#{config[:scheme]}.#{container}.#{key}", value, @timestamp
+      end
     end
   end
 
@@ -189,5 +201,15 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
       tags << @inspect['Config']['Env'].select { |tag| tag.to_s.match(/#{value}=/) }.first.gsub(/#{value}=/, '') + '.'
     end
     tags
+  end
+
+  def blkio_stats(io_stats)
+    stats_out = {}
+    io_stats.each do |stats_type, stats_vals|
+      stats_vals.each do |value|
+        stats_out["#{stats_type}.#{value['op']}.#{value['major']}.#{value['minor']}"] = value['value']
+      end
+    end
+    stats_out
   end
 end
