@@ -1,11 +1,13 @@
 #! /usr/bin/env ruby
 #
-#   metrics-docker-stats
+#   metrics-docker-info
 #
 # DESCRIPTION:
 #
+# This check gather certain general stats from Docker (number of CPUs, number of containers, images...)
 # Supports the stats feature of the docker remote api ( docker server 1.5 and newer )
 # Supports connecting to docker remote API over Unix socket or TCP
+# Based on metrics-docker-stats by @paulczar
 #
 #
 # OUTPUT:
@@ -18,21 +20,18 @@
 #   gem: sensu-plugin
 #
 # USAGE:
-#   Gather stats from all containers on a host using socket:
-#   metrics-docker-stats.rb -p unix -H /var/run/docker.sock
+#   Gather stats using unix socket:
+#   metrics-docker-info.rb -p unix -H /var/run/docker.sock
 #
-#   Gather stats from all containers on a host using TCP:
-#   metrics-docker-stats.rb -p http -H localhost:2375
+#   Gather stats from localhost using TCP:
+#   metrics-docker-info.rb -p http -H localhost:2375
 #
-#   Gather stats from a specific container using socket:
-#   metrics-docker-stats.rb -p unix -H /var/run/docker.sock -c 5bf1b82382eb
-#
-#   See metrics-docker-stats.rb --help for full usage flags
+#   See metrics-docker-info.rb --help for full usage flags
 #
 # NOTES:
 #
 # LICENSE:
-#   Copyright 2015 Paul Czarkowski. Github @paulczar
+#   Copyright 2017 Alfonso Casimiro. Github @alcasim
 #   Released under the same terms as Sensu (the MIT license); see LICENSE
 #   for details.
 #
@@ -53,7 +52,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
-         default: '127.0.0.1:2375'
+         default: '/var/run/docker.sock'
 
   option :docker_protocol,
          description: 'http or unix',
