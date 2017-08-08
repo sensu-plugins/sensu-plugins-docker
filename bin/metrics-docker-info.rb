@@ -59,7 +59,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'http or unix',
          short: '-p PROTOCOL',
          long: '--protocol PROTOCOL',
-         default: 'http'
+         default: 'unix'
 
   def run
     @timestamp = Time.now.to_i
