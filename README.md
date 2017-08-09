@@ -15,6 +15,7 @@ This check supports docker versions >= 1.18. Check docker-engine API for more in
  * check-docker-container.rb
  * metrics-docker-container.rb
  * metrics-docker-stats.rb
+ * metrics-docker-info.rb
 
 ## Usage
 

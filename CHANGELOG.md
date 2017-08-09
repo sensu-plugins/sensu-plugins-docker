@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+- metrics-docker-info.rb: general information metrics from docker
+- metrics-docker-stats.rb: Added to include environment variables values as part of the metric. Added I/O stats option
+
 ### Added
 - Ruby 2.4.1 testing
 
