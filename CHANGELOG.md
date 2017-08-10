@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+- metrics-docker-stats.rb: Include metric with cpu usage percentage calculated based on docker stats (@alcasim)
 
 ## [1.4.0] - 2017-08-08
 ### Added

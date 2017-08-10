@@ -111,6 +111,13 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          boolean: true,
          default: false
 
+  option :cpupercent,
+         description: 'add cpu usage percentage metric',
+         short: '-P',
+         long: '--percentage',
+         boolean: true,
+         default: false
+
   def run
     @timestamp = Time.now.to_i
 
@@ -150,6 +157,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
         output "#{config[:scheme]}.#{container}.#{key}", value, @timestamp
       end
     end
+    output "#{config[:scheme]}.#{container}.cpu_stats.usage_percent", calculate_cpu_percent(stats), @timestamp if config[:cpupercent]
   end
 
   def docker_api(path)
@@ -211,5 +219,18 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
       end
     end
     stats_out
+  end
+
+  def calculate_cpu_percent(stats)
+    cpu_percent = 0.0
+    previous_cpu = stats['precpu_stats']['cpu_usage']['total_usage']
+    previous_system = stats['precpu_stats']['system_cpu_usage']
+    cpu_delta = stats['cpu_stats']['cpu_usage']['total_usage'] - previous_cpu
+    system_delta = stats['cpu_stats']['system_cpu_usage'] - previous_system
+    if system_delta > 0 && cpu_delta > 0
+      number_of_cpu = stats['cpu_stats']['cpu_usage']['percpu_usage'].length
+      cpu_percent = (cpu_delta.to_f / system_delta.to_f) * number_of_cpu * 100
+    end
+    cpu_percent
   end
 end
