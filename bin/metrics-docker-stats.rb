@@ -231,6 +231,6 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
       number_of_cpu = stats['cpu_stats']['cpu_usage']['percpu_usage'].length
       cpu_percent = (cpu_delta.to_f / system_delta.to_f) * number_of_cpu * 100
     end
-    cpu_percent
+    format('%.2f', cpu_percent)
   end
 end
