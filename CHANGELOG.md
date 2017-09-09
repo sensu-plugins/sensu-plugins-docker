@@ -6,6 +6,9 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
+### Breaking Change
+- bumped dependency of `sensu-plugin` to 2.x (@majormoses)
+
 ## [1.5.0] - 2017-09-09
 ### Added
 - metrics-docker-stats.rb: Include metric with cpu usage percentage calculated based on docker stats (@alcasim)
