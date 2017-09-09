@@ -1,10 +1,17 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
+This CHANGELOG follows the format listed at [Our CHANGELOG Guidelines ](https://github.com/sensu-plugins/community/blob/master/HOW_WE_CHANGELOG.md).
+Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## [1.5.0] - 2017-09-09
+### Added
 - metrics-docker-stats.rb: Include metric with cpu usage percentage calculated based on docker stats (@alcasim)
+
+### Changed
+- updated CHANGELOG guidelines location (@majormoses)
 
 ## [1.4.0] - 2017-08-08
 ### Added
@@ -97,7 +104,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.4.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.4.0..1.5.0
 [1.4.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.2.0...1.3.0
