@@ -13,6 +13,9 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 ### Breaking Change
 - bumped dependency of `sensu-plugin` to 2.x you can read about it  [here](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07) (@majormoses)
 
+### Added
+- client_helpers.rb: Add a simple DockerApi class. Add parse_json method.
+
 ### Removed
 - Remove unnecessary `docker_api` dependency
 
