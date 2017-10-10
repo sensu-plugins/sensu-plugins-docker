@@ -38,9 +38,7 @@
 #
 
 require 'sensu-plugin/metric/cli'
-require 'socket'
-require 'net_http_unix'
-require 'json'
+require 'sensu-plugins-docker/client_helpers'
 
 class Hash
   def self.to_dotted_hash(hash, recursive_key = '')
@@ -69,7 +67,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          default: ''
 
   option :docker_host,
-         description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
+         description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
          default: '127.0.0.1:2375'
@@ -120,6 +118,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
   def run
     @timestamp = Time.now.to_i
+    @client = DockerApi.new(config[:docker_host])
 
     list = if config[:container] != ''
              [config[:container]]
@@ -150,6 +149,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     dotted_stats.each do |key, value|
       next if key == 'read' # unecessary timestamp
       next if value.is_a?(Array)
+      value.delete!('/') if key == 'name'
       output "#{config[:scheme]}.#{container}.#{key}", value, @timestamp
     end
     if config[:ioinfo]
@@ -160,30 +160,12 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     output "#{config[:scheme]}.#{container}.cpu_stats.usage_percent", calculate_cpu_percent(stats), @timestamp if config[:cpupercent]
   end
 
-  def docker_api(path)
-    if config[:docker_protocol] == 'unix'
-      session = NetX::HTTPUnix.new("unix://#{config[:docker_host]}")
-      request = Net::HTTP::Get.new "/#{path}"
-    else
-      uri = URI("#{config[:docker_protocol]}://#{config[:docker_host]}/#{path}")
-      session = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Get.new uri.request_uri
-    end
-
-    session.start do |http|
-      http.request request do |response|
-        response.value
-        return JSON.parse(response.read_body)
-      end
-    end
-  end
-
   def list_containers
     list = []
-    path = 'containers/json'
-    @containers = docker_api(path)
+    path = '/containers/json'
+    containers = @client.parse(path)
 
-    @containers.each do |container|
+    containers.each do |container|
       list << if config[:friendly_names]
                 container['Names'][0].delete('/')
               elsif config[:name_parts]
@@ -196,17 +178,25 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   def container_stats(container)
-    path = "containers/#{container}/stats?stream=0"
-    @stats = docker_api(path)
+    path = "/containers/#{container}/stats?stream=0"
+    response = @client.call(path)
+    if response.code.to_i == 404
+      critical "#{config[:container]} is not running on #{@client.uri}"
+    end
+    parse_json(response)
   end
 
   def container_tags(container)
     tags = ''
-    path = "containers/#{container}/json"
-    @inspect = docker_api(path)
+    path = "/containers/#{container}/json"
+    response = @client.call(path)
+    if response.code.to_i == 404
+      critical "#{config[:container]} is not running on #{@client.uri}"
+    end
+    inspect = parse_json(response)
     tag_list = config[:environment_tags].split(',')
     tag_list.each do |value|
-      tags << @inspect['Config']['Env'].select { |tag| tag.to_s.match(/#{value}=/) }.first.to_s.gsub(/#{value}=/, '') + '.'
+      tags << inspect['Config']['Env'].select { |tag| tag.to_s.match(/#{value}=/) }.first.to_s.gsub(/#{value}=/, '') + '.'
     end
     tags
   end

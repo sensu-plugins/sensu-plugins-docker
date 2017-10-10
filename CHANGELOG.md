@@ -16,6 +16,12 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 ### Added
 - client_helpers.rb: Add a simple DockerApi class. Add parse_json method.
 
+### Changed
+- metrics-docker-stats.rb: Make use of DockerApi class. Default docker_host defined by DockerApi class. Remove docker_api method.
+
+### Fixed
+- metrics-docker-stats.rb: Remove trailing / in name value.
+
 ### Removed
 - Remove unnecessary `docker_api` dependency
 
