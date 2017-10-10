@@ -37,9 +37,7 @@
 #
 
 require 'sensu-plugin/metric/cli'
-require 'socket'
-require 'net_http_unix'
-require 'json'
+require 'sensu-plugins-docker/client_helpers'
 
 class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option :scheme,
@@ -49,7 +47,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          default: "#{Socket.gethostname}.docker"
 
   option :docker_host,
-         description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
+         description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
          default: '/var/run/docker.sock'
@@ -62,30 +60,13 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
   def run
     @timestamp = Time.now.to_i
-    path = 'info'
-    infolist = docker_api(path)
+    @client = DockerApi.new(config[:docker_host])
+    path = '/info'
+    infolist = @client.parse(path)
     filtered_list = infolist.select { |key, _value| key.match(/NCPU|NFd|Containers|Images|NGoroutines|NEventsListener|MemTotal/) }
     filtered_list.each do |key, value|
       output "#{config[:scheme]}.#{key}", value, @timestamp
     end
     ok
-  end
-
-  def docker_api(path)
-    if config[:docker_protocol] == 'unix'
-      session = NetX::HTTPUnix.new("unix://#{config[:docker_host]}")
-      request = Net::HTTP::Get.new "/#{path}"
-    else
-      uri = URI("#{config[:docker_protocol]}://#{config[:docker_host]}/#{path}")
-      session = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Get.new uri.request_uri
-    end
-
-    session.start do |http|
-      http.request request do |response|
-        response.value
-        return JSON.parse(response.read_body)
-      end
-    end
   end
 end

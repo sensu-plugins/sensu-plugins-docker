@@ -25,7 +25,7 @@
 #
 
 require 'sensu-plugin/metric/cli'
-require 'socket'
+require 'sensu-plugins-docker/client_helpers'
 require 'pathname'
 require 'sys/proctable'
 
@@ -46,7 +46,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
          default: '/sys/fs/cgroup'
 
   option :docker_host,
-         description: 'Docker host. TCP: "tcp://host:port" or Unix: "unix:///path/to/docker.sock" (default: "tcp://127.0.1.1:2376")',
+         description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
          default: 'tcp://127.0.1.1:2376'
@@ -57,12 +57,20 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
          long: '--cgroup-template template_string',
          default: 'cpu/docker/%{container}/cgroup.procs'
 
+  option :friendly_names,
+         description: 'use friendly name if available',
+         short: '-n',
+         long: '--names',
+         boolean: true,
+         default: false
+
   def run
+    @client = DockerApi.new(config[:docker_host])
     container_metrics
     ok
   end
 
-  def container_metrics #rubocop:disable all
+  def container_metrics
     cgroup = "#{config[:cgroup_path]}/#{config[:cgroup_template]}"
 
     timestamp = Time.now.to_i
@@ -72,18 +80,24 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
     fields = [:rss, :vsize, :nswap, :pctmem]
 
-    ENV['DOCKER_HOST'] = config[:docker_host]
-    containers = `docker ps --quiet --no-trunc`.split("\n")
+    path = '/containers/json'
+    containers = @client.parse(path)
 
     containers.each do |container|
-      path = Pathname(format(cgroup, container: container))
+      path = Pathname(format(cgroup, container: container['Id']))
       pids = path.readlines.map(&:to_i)
+
+      container_name = if config[:friendly_names]
+                         container['Names'][0].delete('/')
+                       else
+                         container['Id']
+                       end
 
       processes = ps.values_at(*pids).flatten.compact.group_by(&:comm)
       processes2 = ps2.values_at(*pids).flatten.compact.group_by(&:comm)
 
       processes.each do |comm, process|
-        prefix = "#{config[:scheme]}.#{container}.#{comm}"
+        prefix = "#{config[:scheme]}.#{container_name}.#{comm}"
         fields.each do |field|
           output "#{prefix}.#{field}", process.map(&field).reduce(:+), timestamp
         end
