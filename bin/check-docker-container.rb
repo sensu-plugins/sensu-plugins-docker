@@ -30,7 +30,7 @@
 
 require 'sensu-plugin/check/cli'
 require 'sensu-plugins-docker/client_helpers'
-require 'json'
+
 #
 # Check Docker Containers
 #
@@ -38,7 +38,7 @@ class CheckDockerContainers < Sensu::Plugin::Check::CLI
   option :docker_host,
          short: '-h docker_host',
          long: '--host DOCKER_HOST',
-         description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
+         description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          default: '127.0.0.1:2375'
 
   option :warn_over,
@@ -94,17 +94,8 @@ class CheckDockerContainers < Sensu::Plugin::Check::CLI
   end
 
   def run
-    client = create_docker_client
-    path = '/containers/json'
-    req = Net::HTTP::Get.new path
-    begin
-      response = client.request(req)
-      containers = JSON.parse(response.body)
-      evaluate_count containers.size
-    rescue JSON::ParserError => e
-      critical "JSON Error: #{e.inspect}"
-    rescue => e
-      warning "Error: #{e.inspect}"
-    end
+    @client = DockerApi.new(config[:docker_host])
+    containers = @client.parse('/containers/json')
+    evaluate_count containers.size
   end
 end

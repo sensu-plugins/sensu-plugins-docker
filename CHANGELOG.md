@@ -21,6 +21,7 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 - metrics-docker-stats.rb: Make use of DockerApi class. Default docker_host defined by DockerApi class. Remove docker_api method.
 - metrics-docker-info.rb: Make use of DockerApi class. Default docker_host defined by DockerApi class. Remove docker_api method.
 - metrics-docker-container.rb: Make use of DockerApi class. Re-enable rubocop for container_metrics method.
+- check-container.rb: Make use of DockerApi class.
 
 ### Fixed
 - metrics-docker-stats.rb: Remove trailing / in name value.
