@@ -37,7 +37,6 @@
 
 require 'sensu-plugin/check/cli'
 require 'sensu-plugins-docker/client_helpers'
-require 'json'
 
 #
 # Check Docker Container
@@ -46,8 +45,9 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
   option :docker_host,
          short: '-h DOCKER_HOST',
          long: '--host DOCKER_HOST',
-         description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
+         description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          default: '127.0.0.1:2375'
+
   option :container,
          short: '-c CONTAINER',
          long: '--container CONTAINER',
@@ -57,32 +57,25 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
          long: '--tag TAG'
 
   def run
-    client = create_docker_client
+    @client = DockerApi.new(config[:docker_host])
     path = "/containers/#{config[:container]}/json"
-    req = Net::HTTP::Get.new path
-    begin
-      response = client.request(req)
-      if response.code.to_i == 404
-        critical "#{config[:container]} is not running on #{config[:docker_host]}"
-      end
-      body = JSON.parse(response.body)
-      container_running = body['State']['Running']
-      if container_running
-        if config[:tag]
-          image = body['Config']['Image']
-          match = image.match(/^(?:([^\/]+)\/)?(?:([^\/]+)\/)?([^@:\/]+)(?:[@:](.+))?$/)
-          unless match && match[4] == config[:tag]
-            critical "#{config[:container]}'s tag is '#{match[4]}', excepting '#{config[:tag]}'"
-          end
+    response = @client.call(path, false)
+    if response.code.to_i == 404
+      critical "Container #{config[:container]} is not running on #{@client.uri}"
+    end
+    body = parse_json(response)
+    container_running = body['State']['Running']
+    if container_running
+      if config[:tag]
+        image = body['Config']['Image']
+        match = image.match(/^(?:([^\/]+)\/)?(?:([^\/]+)\/)?([^@:\/]+)(?:[@:](.+))?$/)
+        unless match && match[4] == config[:tag]
+          critical "#{config[:container]}'s tag is '#{match[4]}', especting '#{config[:tag]}'"
         end
-        ok "#{config[:container]} is running on #{config[:docker_host]}."
-      else
-        critical "#{config[:container]} is #{body['State']['Status']} on #{config[:docker_host]}."
       end
-    rescue JSON::ParserError => e
-      critical "JSON Error: #{e.inspect}"
-    rescue => e
-      warning "Error: #{e.inspect}"
+      ok "#{config[:container]} is running on #{@client.uri}."
+    else
+      critical "#{config[:container]} is #{body['State']['Status']} on #{@client.uri}."
     end
   end
 end
