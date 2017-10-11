@@ -16,6 +16,7 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 ### Added
 - client_helpers.rb: Add a simple DockerApi class. Add parse_json method.
 - metrics-docker-container.rb: Friendly names option added
+- check-container-logs.rb: Add an option to check logs from stopped containers if all containers are checked. Add an option to don't check stderr logs. Add an option to don't check stdout logs. Add timestamp in logs output. Add the possibility to use -n multiple times to check multiple containers at once.
 
 ### Changed
 - metrics-docker-stats.rb: Make use of DockerApi class. Default docker_host defined by DockerApi class. Remove docker_api method.
@@ -23,12 +24,14 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 - metrics-docker-container.rb: Make use of DockerApi class. Re-enable rubocop for container_metrics method.
 - check-container.rb: Make use of DockerApi class.
 - check-docker-container.rb: Make use of DockerApi class.
+- check-container-logs.rb: Make use of DockerApi class. Check only logs generated with the 8 bits control to prevent to check logs generated in interactive mode. Check the newest logs rows first instead the oldest. Option -n is not required anymore, if -n option is not provided, the check will be applied to all running containers. Changed the messages displayed with ok and critical
 
 ### Fixed
 - metrics-docker-stats.rb: Remove trailing / in name value.
 
 ### Removed
 - Remove unnecessary `docker_api` dependency
+- check-container-logs.rb: Logs generated in interactive mode are not checked anymore
 
 ## [1.5.0] - 2017-09-09
 ### Added
