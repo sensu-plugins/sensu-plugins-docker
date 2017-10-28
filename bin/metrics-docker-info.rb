@@ -21,10 +21,10 @@
 #
 # USAGE:
 #   Gather stats using unix socket:
-#   metrics-docker-info.rb -p unix -H /var/run/docker.sock
+#   metrics-docker-info.rb -H /var/run/docker.sock
 #
-#   Gather stats from localhost using TCP:
-#   metrics-docker-info.rb -p http -H localhost:2375
+#   Gather stats from localhost using HTTP:
+#   metrics-docker-info.rb -H localhost:2375
 #
 #   See metrics-docker-info.rb --help for full usage flags
 #
@@ -51,12 +51,6 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
          default: '/var/run/docker.sock'
-
-  option :docker_protocol,
-         description: 'http or unix',
-         short: '-p PROTOCOL',
-         long: '--protocol PROTOCOL',
-         default: 'unix'
 
   def run
     @timestamp = Time.now.to_i

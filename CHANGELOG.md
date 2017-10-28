@@ -12,6 +12,10 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ### Breaking Change
 - bumped dependency of `sensu-plugin` to 2.x you can read about it  [here](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07) (@majormoses)
+- check-container-logs.rb: -N (--container-name) instead of -n for container name
+- check-docker-container.rb: -H (--docker-host) instead of -h (--host) for docker Host
+- check-container.rb: -H (--docker-host) for docker Host instead of -h (--host) for docker host, -N (--container-name) instead of -c (--container) for container name
+- metrics-docker-stats.rb: -N (--container-name) instead of -c (--container) for Container name
 
 ### Added
 - client_helpers.rb: Add a simple DockerApi class. Add parse_json method.
@@ -32,6 +36,8 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 ### Removed
 - Remove unnecessary `docker_api` dependency
 - check-container-logs.rb: Logs generated in interactive mode are not checked anymore
+- metrics-docker-stats.rb: option -p (--protocol) have been removed because new DockerApi don't use it
+- metrics-docker-info.rb: option -p (--protocol) have been removed because new DockerApi don't use it
 
 ## [1.5.0] - 2017-09-09
 ### Added

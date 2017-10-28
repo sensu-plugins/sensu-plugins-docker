@@ -20,6 +20,14 @@
 #   => 1 container running = OK.
 #   => 4 container running = CRITICAL
 #
+#   check-docker-container.rb -H /var/run/docker.sock -w 3 -c 3
+#   => 1 container running = OK.
+#   => 4 container running = CRITICAL
+#
+#   check-docker-container.rb -H https://127.0.0.1:2376  -w 3 -c 3
+#   => 1 container running = OK.
+#   => 4 container running = CRITICAL
+#
 # NOTES:
 #
 # LICENSE:
@@ -36,9 +44,9 @@ require 'sensu-plugins-docker/client_helpers'
 #
 class CheckDockerContainers < Sensu::Plugin::Check::CLI
   option :docker_host,
-         short: '-h docker_host',
-         long: '--host DOCKER_HOST',
          description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
+         short: '-H DOCKER_HOST',
+         long: '--docker-host DOCKER_HOST',
          default: '127.0.0.1:2375'
 
   option :warn_over,

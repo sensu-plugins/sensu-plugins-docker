@@ -16,11 +16,11 @@
 #   gem: sensu-plugin
 #
 # USAGE:
-#   check-container.rb -h /var/run/docker.sock -c c92d402a5d14
+#   check-container.rb -H /var/run/docker.sock -N c92d402a5d14
 #   CheckDockerContainer OK: c92d402a5d14 is running on /var/run/docker.sock.
 #
-#   check-container.rb -h /var/run/docker.sock -c circle_burglar
-#   CheckDockerContainer CRITICAL: circle_burglar is not running on /var/run/docker.sock
+#   check-container.rb -H https://127.0.0.1:2376 -N circle_burglar
+#   CheckDockerContainer CRITICAL: circle_burglar is not running on https://127.0.0.1:2376
 #
 # NOTES:
 #     => State.running == true   -> OK
@@ -43,15 +43,16 @@ require 'sensu-plugins-docker/client_helpers'
 #
 class CheckDockerContainer < Sensu::Plugin::Check::CLI
   option :docker_host,
-         short: '-h DOCKER_HOST',
-         long: '--host DOCKER_HOST',
+         short: '-H DOCKER_HOST',
+         long: '--docker-host DOCKER_HOST',
          description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          default: '127.0.0.1:2375'
 
   option :container,
-         short: '-c CONTAINER',
-         long: '--container CONTAINER',
+         short: '-N CONTAINER',
+         long: '--container-name CONTAINER',
          required: true
+
   option :tag,
          short: '-t TAG',
          long: '--tag TAG'

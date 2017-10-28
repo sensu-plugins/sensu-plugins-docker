@@ -14,7 +14,22 @@
 #   gem: sensu-plugin
 #
 # USAGE:
-#   #YELLOW
+#
+# metrics-docker-container.rb -H /var/run/docker.sock -n
+#   docker.host.sensu.sh.rss 1 1508825823
+#   docker.host.sensu.sh.vsize 1572864 1508825823
+#   docker.host.sensu.sh.nswap 0 1508825823
+#   docker.host.sensu.sh.pctmem 0.0 1508825823
+#   docker.host.sensu.sh.fd 0 1508825823
+#   docker.host.sensu.sh.cpu 0 1508825823
+#
+# metrics-docker-container.rb -H https://127.0.0.1:2376
+#   docker.host.ff5240e079488d248c021f8da5d13074a6a9db72ffaf1129eded445f4e16cf50.sh.rss 183 1508825793
+#   docker.host.ff5240e079488d248c021f8da5d13074a6a9db72ffaf1129eded445f4e16cf50.sh.vsize 4616192 1508825793
+#   docker.host.ff5240e079488d248c021f8da5d13074a6a9db72ffaf1129eded445f4e16cf50.sh.nswap 0 1508825793
+#   docker.host.ff5240e079488d248c021f8da5d13074a6a9db72ffaf1129eded445f4e16cf50.sh.pctmem 0.01 1508825793
+#   docker.host.ff5240e079488d248c021f8da5d13074a6a9db72ffaf1129eded445f4e16cf50.sh.fd 0 1508825793
+#   docker.host.ff5240e079488d248c021f8da5d13074a6a9db72ffaf1129eded445f4e16cf50.sh.cpu 0 1508825793
 #
 # NOTES:
 #

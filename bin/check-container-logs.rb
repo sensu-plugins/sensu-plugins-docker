@@ -17,9 +17,20 @@
 #   gem: net_http_unix
 #
 # USAGE:
-#   check-container-logs.rb -H /tmp/docker.sock -n logspout -r 'problem sending' -r 'i/o timeout' -i 'Remark:' -i 'The configuration is'
+#   # Check only one container
+#   check-container-logs.rb -H /tmp/docker.sock -N logspout -r 'problem sending' -r 'i/o timeout' -i 'Remark:' -i 'The configuration is'
 #   => 1 container running = OK
 #   => 4 container running = CRITICAL
+#
+#   # Check multiple containers
+#   check-container-logs.rb -H /tmp/docker.sock -N logspout -N logtest -r 'problem sending' -r 'i/o timeout' -i 'Remark:' -i 'The configuration is'
+#   => 1 container running = OK
+#   => 4 container running = CRITICAL
+#
+#   # Check all containers
+#   check-container-logs.rb -H /tmp/docker.sock -r 'problem sending' -r 'i/o timeout' -i 'Remark:' -i 'The configuration is'
+#   => 1 containers running = OK
+#   => 4 containers running = CRITICAL
 #
 # NOTES:
 #   The API parameter required to use the limited lookback (-t) was introduced
@@ -44,7 +55,7 @@ class ContainerLogChecker < Sensu::Plugin::Check::CLI
 
   option :container,
          description: 'name of container; can be used multiple times. /!\ All running containers will be check if this options is not provided',
-         short: '-n CONTAINER',
+         short: '-N CONTAINER',
          long: '--container-name CONTAINER',
          default: [],
          proc: proc { |flag| (@options[:container][:accumulated] ||= []).push(flag) }

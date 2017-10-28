@@ -19,13 +19,13 @@
 #
 # USAGE:
 #   Gather stats from all containers on a host using socket:
-#   metrics-docker-stats.rb -p unix -H /var/run/docker.sock
+#   metrics-docker-stats.rb -H /var/run/docker.sock
 #
-#   Gather stats from all containers on a host using TCP:
-#   metrics-docker-stats.rb -p http -H localhost:2375
+#   Gather stats from all containers on a host using HTTP:
+#   metrics-docker-stats.rb -H localhost:2375
 #
 #   Gather stats from a specific container using socket:
-#   metrics-docker-stats.rb -p unix -H /var/run/docker.sock -c 5bf1b82382eb
+#   metrics-docker-stats.rb -H /var/run/docker.sock -N 5bf1b82382eb
 #
 #   See metrics-docker-stats.rb --help for full usage flags
 #
@@ -62,8 +62,8 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
   option :container,
          description: 'Name of container to collect metrics for',
-         short: '-c CONTAINER',
-         long: '--container CONTAINER',
+         short: '-N CONTAINER',
+         long: '--container-name CONTAINER',
          default: ''
 
   option :docker_host,
@@ -71,12 +71,6 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          short: '-H DOCKER_HOST',
          long: '--docker-host DOCKER_HOST',
          default: '127.0.0.1:2375'
-
-  option :docker_protocol,
-         description: 'http or unix',
-         short: '-p PROTOCOL',
-         long: '--protocol PROTOCOL',
-         default: 'http'
 
   option :friendly_names,
          description: 'use friendly name if available',
