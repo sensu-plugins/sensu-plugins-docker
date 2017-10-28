@@ -12,6 +12,7 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ### Breaking Change
 - bumped dependency of `sensu-plugin` to 2.x you can read about it  [here](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07) (@majormoses)
+- Default docker host defined by DockerApi Class ( ENV[DOCKER_URL] => ENV[DOCKER_HOST] => /var/run/docker.sock )
 - check-container-logs.rb: -N (--container-name) instead of -n for container name
 - check-docker-container.rb: -H (--docker-host) instead of -h (--host) for docker Host
 - check-container.rb: -H (--docker-host) for docker Host instead of -h (--host) for docker host, -N (--container-name) instead of -c (--container) for container name

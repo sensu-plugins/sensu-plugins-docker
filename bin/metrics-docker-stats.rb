@@ -69,8 +69,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option :docker_host,
          description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
-         long: '--docker-host DOCKER_HOST',
-         default: '127.0.0.1:2375'
+         long: '--docker-host DOCKER_HOST'
 
   option :friendly_names,
          description: 'use friendly name if available',
@@ -80,8 +79,8 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
          default: false
 
   option :name_parts,
-         description: 'Partial names by spliting and returning at index(es). \
-                       eg. -m 3,4 my-docker-container-process_name-b2ffdab8f1aceae85300 for process_name.b2ffdab8f1aceae85300',
+         description: 'Partial names by spliting and returning at index(es).
+         eg. -m 3,4 my-docker-container-process_name-b2ffdab8f1aceae85300 for process_name.b2ffdab8f1aceae85300',
          short: '-m index',
          long: '--match index'
 
@@ -93,8 +92,8 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
   option :environment_tags,
          description: 'Name of environment variables on each container to be appended to metric name, separated by commas',
-         short: '-e ENVIRONMENT_VARIABLES',
-         long: '--environment-tags ENVIRONMENT_VARIABLES'
+         short: '-e ENV_VARS',
+         long: '--environment-tags ENV_VARS'
 
   option :ioinfo,
          description: 'enable IO Docker metrics',

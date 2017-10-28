@@ -63,13 +63,12 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option :docker_host,
          description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
-         long: '--docker-host DOCKER_HOST',
-         default: 'tcp://127.0.1.1:2376'
+         long: '--docker-host DOCKER_HOST'
 
   option :cgroup_template,
          description: 'cgroup_template',
-         short: '-T <template string>',
-         long: '--cgroup-template template_string',
+         short: '-T TPL_STRING',
+         long: '--cgroup-template TPL_STRING',
          default: 'cpu/docker/%{container}/cgroup.procs'
 
   option :friendly_names,

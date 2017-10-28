@@ -50,8 +50,7 @@ class ContainerLogChecker < Sensu::Plugin::Check::CLI
   option :docker_host,
          description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
-         long: '--docker-host DOCKER_HOST',
-         default: '127.0.0.1:2375'
+         long: '--docker-host DOCKER_HOST'
 
   option :container,
          description: 'name of container; can be used multiple times. /!\ All running containers will be check if this options is not provided',
@@ -61,16 +60,16 @@ class ContainerLogChecker < Sensu::Plugin::Check::CLI
          proc: proc { |flag| (@options[:container][:accumulated] ||= []).push(flag) }
 
   option :red_flags,
-         description: 'substring whose presence (case-insensitive by default) in a log line indicates an error; can be used multiple times',
-         short: '-r "error occurred" -r "problem encountered" -r "error status"',
-         long: '--red-flag "error occurred" --red-flag "problem encountered" --red-flag "error status"',
+         description: 'String whose presence (case-insensitive by default) in a log line indicates an error; can be used multiple times',
+         short: '-r ERR_STRING',
+         long: '--red-flag ERR_STRING',
          default: [],
          proc: proc { |flag| (@options[:red_flags][:accumulated] ||= []).push(flag) }
 
   option :ignore_list,
-         description: 'substring whose presence (case-insensitive by default) in a log line indicates the line should be ignored; can be used multiple times',
-         short: '-i "configuration:" -i "# Remark:"',
-         long: '--ignore-lines-with "configuration:" --ignore-lines-with "# remark:"',
+         description: 'String whose presence (case-insensitive by default) in a log line indicates the line should be ignored; can be used multiple times',
+         short: '-i IGNSTR',
+         long: '--ignore-lines-with IGNSTR',
          default: [],
          proc: proc { |flag| (@options[:ignore_list][:accumulated] ||= []).push(flag) }
 

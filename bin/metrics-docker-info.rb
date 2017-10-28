@@ -49,8 +49,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option :docker_host,
          description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
-         long: '--docker-host DOCKER_HOST',
-         default: '/var/run/docker.sock'
+         long: '--docker-host DOCKER_HOST'
 
   def run
     @timestamp = Time.now.to_i

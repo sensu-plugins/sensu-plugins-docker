@@ -46,8 +46,7 @@ class CheckDockerContainers < Sensu::Plugin::Check::CLI
   option :docker_host,
          description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
-         long: '--docker-host DOCKER_HOST',
-         default: '127.0.0.1:2375'
+         long: '--docker-host DOCKER_HOST'
 
   option :warn_over,
          short: '-W N',
