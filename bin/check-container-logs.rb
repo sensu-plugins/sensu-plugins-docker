@@ -175,6 +175,13 @@ class ContainerLogChecker < Sensu::Plugin::Check::CLI
     problem_string = nil
     path = "/containers/json?all=#{config[:check_all]}"
     containers = config[:container]
+    if config[:container].none?
+      warn_msg = %(
+        Collecting logs from all containers is dangerous and could lead to sensu client hanging depending on volume of logs.
+        This not recommended for production environments.
+      ).gsub(/\s+/, ' ').strip
+      message warn_msg
+    end
     containers = @client.parse(path).map { |p| p['Names'][0].delete('/') } if containers.none?
     critical 'Check all containers was asked but no containers was found' if containers.none?
     containers.each do |container|
