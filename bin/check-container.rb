@@ -16,11 +16,11 @@
 #   gem: sensu-plugin
 #
 # USAGE:
-#   check-docker-container.rb c92d402a5d14
-#   CheckDockerContainer OK
+#   check-container.rb -h /var/run/docker.sock -c c92d402a5d14
+#   CheckDockerContainer OK: c92d402a5d14 is running on /var/run/docker.sock.
 #
-#   check-docker-container.rb circle_burglar
-#   CheckDockerContainer CRITICAL: circle_burglar is not running on the host
+#   check-container.rb -h /var/run/docker.sock -c circle_burglar
+#   CheckDockerContainer CRITICAL: circle_burglar is not running on /var/run/docker.sock
 #
 # NOTES:
 #     => State.running == true   -> OK
