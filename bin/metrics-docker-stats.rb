@@ -206,7 +206,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
     @inspect = docker_api(path)
     tag_list = config[:environment_tags].split(',')
     tag_list.each do |value|
-      tags << @inspect['Config']['Env'].select { |tag| tag.to_s.match(/#{value}=/) }.first.gsub(/#{value}=/, '') + '.'
+      tags << @inspect['Config']['Env'].select { |tag| tag.to_s.match(/#{value}=/) }.first.to_s.gsub(/#{value}=/, '') + '.'
     end
     tags
   end

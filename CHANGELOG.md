@@ -6,6 +6,9 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
+### Fixed
+- metrics-docker-stats.rb:: Fix gsub on nil docker environment variable (@epierotto)
+
 ### Breaking Change
 - bumped dependency of `sensu-plugin` to 2.x you can read about it  [here](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07) (@majormoses)
 
