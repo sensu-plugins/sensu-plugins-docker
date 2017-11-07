@@ -6,6 +6,7 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
+## [2.0.0] - 2017-11-06
 ### Fixed
 - metrics-docker-stats.rb:: Fix gsub on nil docker environment variable (@epierotto)
 
@@ -110,7 +111,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.4.0..1.5.0
 [1.4.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.3.0...1.3.1
