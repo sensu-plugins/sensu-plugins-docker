@@ -6,12 +6,8 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
-## [2.0.0] - 2017-11-06
-### Fixed
-- metrics-docker-stats.rb:: Fix gsub on nil docker environment variable (@epierotto)
-
-### Breaking Change
-- bumped dependency of `sensu-plugin` to 2.x you can read about it  [here](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07) (@majormoses)
+## [3.0.0] - 2018-02-17
+### Breaking Changes
 - Default docker host defined by DockerApi Class ( ENV[DOCKER_URL] => ENV[DOCKER_HOST] => /var/run/docker.sock )
 - check-container-logs.rb: -N (--container-name) instead of -n for container name. Now a 'CRITICAL' is trigger if a container doesn't exist (previously, a 'OK' was trigger)
 - check-docker-container.rb: -H (--docker-host) instead of -h (--host) for docker Host
@@ -39,6 +35,13 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 - check-container-logs.rb: Logs generated in interactive mode are not checked anymore
 - metrics-docker-stats.rb: option -p (--protocol) have been removed because new DockerApi don't use it
 - metrics-docker-info.rb: option -p (--protocol) have been removed because new DockerApi don't use it
+
+## [2.0.0] - 2017-11-06
+### Fixed
+- metrics-docker-stats.rb:: Fix gsub on nil docker environment variable (@epierotto)
+
+### Breaking Change
+- bumped dependency of `sensu-plugin` to 2.x you can read about it  [here](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07) (@majormoses)
 
 ## [1.5.0] - 2017-09-09
 ### Added
@@ -138,7 +141,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.4.0..1.5.0
 [1.4.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.3.1...1.4.0
