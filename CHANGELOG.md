@@ -12,6 +12,33 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ### Breaking Change
 - bumped dependency of `sensu-plugin` to 2.x you can read about it  [here](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07) (@majormoses)
+- Default docker host defined by DockerApi Class ( ENV[DOCKER_URL] => ENV[DOCKER_HOST] => /var/run/docker.sock )
+- check-container-logs.rb: -N (--container-name) instead of -n for container name. Now a 'CRITICAL' is trigger if a container doesn't exist (previously, a 'OK' was trigger)
+- check-docker-container.rb: -H (--docker-host) instead of -h (--host) for docker Host
+- check-container.rb: -H (--docker-host) for docker Host instead of -h (--host) for docker host, -N (--container-name) instead of -c (--container) for container name
+- metrics-docker-stats.rb: -N (--container-name) instead of -c (--container) for Container name
+
+### Added
+- client_helpers.rb: Add a simple DockerApi class. Add parse_json method.
+- metrics-docker-container.rb: Friendly names option added
+- check-container-logs.rb: Add an option to check logs from stopped containers if all containers are checked. Add an option to don't check stderr logs. Add an option to don't check stdout logs. Add timestamp in logs output. Add the possibility to use -n multiple times to check multiple containers at once.
+
+### Changed
+- metrics-docker-stats.rb: Make use of DockerApi class. Default docker_host defined by DockerApi class. Remove docker_api method.
+- metrics-docker-info.rb: Make use of DockerApi class. Default docker_host defined by DockerApi class. Remove docker_api method.
+- metrics-docker-container.rb: Make use of DockerApi class. Re-enable rubocop for container_metrics method.
+- check-container.rb: Make use of DockerApi class.
+- check-docker-container.rb: Make use of DockerApi class.
+- check-container-logs.rb: Make use of DockerApi class. Check only logs generated with the 8 bits control to prevent to check logs generated in interactive mode. Check the newest logs rows first instead the oldest. Option -n is not required anymore, if -n option is not provided, the check will be applied to all running containers. Changed the messages displayed with ok and critical
+
+### Fixed
+- metrics-docker-stats.rb: Remove trailing / in name value.
+
+### Removed
+- Remove unnecessary `docker_api` dependency
+- check-container-logs.rb: Logs generated in interactive mode are not checked anymore
+- metrics-docker-stats.rb: option -p (--protocol) have been removed because new DockerApi don't use it
+- metrics-docker-info.rb: option -p (--protocol) have been removed because new DockerApi don't use it
 
 ## [1.5.0] - 2017-09-09
 ### Added

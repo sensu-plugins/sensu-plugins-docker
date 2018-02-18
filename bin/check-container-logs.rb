@@ -17,9 +17,20 @@
 #   gem: net_http_unix
 #
 # USAGE:
-#   check-container-logs.rb -H /tmp/docker.sock -n logspout -r 'problem sending' -r 'i/o timeout' -i 'Remark:' -i 'The configuration is'
+#   # Check only one container
+#   check-container-logs.rb -H /tmp/docker.sock -N logspout -r 'problem sending' -r 'i/o timeout' -i 'Remark:' -i 'The configuration is'
 #   => 1 container running = OK
 #   => 4 container running = CRITICAL
+#
+#   # Check multiple containers
+#   check-container-logs.rb -H /tmp/docker.sock -N logspout -N logtest -r 'problem sending' -r 'i/o timeout' -i 'Remark:' -i 'The configuration is'
+#   => 1 container running = OK
+#   => 4 container running = CRITICAL
+#
+#   # Check all containers
+#   check-container-logs.rb -H /tmp/docker.sock -r 'problem sending' -r 'i/o timeout' -i 'Remark:' -i 'The configuration is'
+#   => 1 containers running = OK
+#   => 4 containers running = CRITICAL
 #
 # NOTES:
 #   The API parameter required to use the limited lookback (-t) was introduced
@@ -37,36 +48,33 @@ require 'sensu-plugins-docker/client_helpers'
 
 class ContainerLogChecker < Sensu::Plugin::Check::CLI
   option :docker_host,
-         description: 'Docker socket to connect. TCP: "host:port" or Unix: "/path/to/docker.sock" (default: "127.0.0.1:2375")',
+         description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
          short: '-H DOCKER_HOST',
-         long: '--docker-host DOCKER_HOST',
-         default: '127.0.0.1:2375'
+         long: '--docker-host DOCKER_HOST'
 
   option :container,
-         description: 'name of container',
-         short: '-n CONTAINER',
+         description: 'name of container; can be used multiple times. /!\ All running containers will be check if this options is not provided',
+         short: '-N CONTAINER',
          long: '--container-name CONTAINER',
-         required: true
+         default: [],
+         proc: proc { |flag| (@options[:container][:accumulated] ||= []).push(flag) }
 
   option :red_flags,
-         description: 'substring whose presence (case-insensitive by default) in a log line indicates an error; can be used multiple t
-imes',
-         short: '-r "error occurred" -r "problem encountered" -r "error status"',
-         long: '--red-flag "error occurred" --red-flag "problem encountered" --red-flag "error status"',
+         description: 'String whose presence (case-insensitive by default) in a log line indicates an error; can be used multiple times',
+         short: '-r ERR_STRING',
+         long: '--red-flag ERR_STRING',
          default: [],
          proc: proc { |flag| (@options[:red_flags][:accumulated] ||= []).push(flag) }
 
   option :ignore_list,
-         description: 'substring whose presence (case-insensitive by default) in a log line indicates the line should be ignored; can
-be used multiple times',
-         short: '-i "configuration:" -i "# Remark:"',
-         long: '--ignore-lines-with "configuration:" --ignore-lines-with "# remark:"',
+         description: 'String whose presence (case-insensitive by default) in a log line indicates the line should be ignored; can be used multiple times',
+         short: '-i IGNSTR',
+         long: '--ignore-lines-with IGNSTR',
          default: [],
          proc: proc { |flag| (@options[:ignore_list][:accumulated] ||= []).push(flag) }
 
   option :case_sensitive,
-         description: 'indicates all red_flag and ignore_list substring matching should be case-sensitive instead of the default case-
-insensitive',
+         description: 'indicates all red_flag and ignore_list substring matching should be case-sensitive instead of the default case-insensitive',
          short: '-c',
          long: '--case-sensitive',
          boolean: true
@@ -83,33 +91,60 @@ insensitive',
          long: '--seconds-ago SECONDS',
          required: false
 
+  option :check_all,
+         description: 'If all containers are checked (no container name provided with -n) , check offline containers too',
+         short: '-a',
+         long: '--all',
+         default: false,
+         boolean: true
+
+  option :disable_stdout,
+         description: 'Disable the check on STDOUT logs. By default both STDERR and STDOUT are checked',
+         short: '-1',
+         long: '--no-stdout',
+         default: true,
+         boolean: true,
+         proc: proc { false } # used to negate the false(default)->true boolean option behaviour to true(default)->false
+
+  option :disable_stderr,
+         description: 'Disable the check on STDERR logs. By default both STDERR and STDOUT are checked',
+         short: '-2',
+         long: '--no-stderr',
+         default: true,
+         boolean: true,
+         proc: proc { false } # used to negate the false(default)->true boolean option behaviour to true(default)->false
+
   def calculate_timestamp(seconds_ago = nil)
     seconds_ago = yield if block_given?
     (Time.now - seconds_ago).to_i
   end
 
   def process_docker_logs(container_name)
-    client = create_docker_client
-    path = "/containers/#{container_name}/logs?stdout=true&stderr=true"
+    path = "/containers/#{container_name}/logs?stdout=#{config[:disable_stdout]}&stderr=#{config[:disable_stderr]}&timestamps=true"
     if config.key? :hours_ago
       timestamp = calculate_timestamp { config[:hours_ago].to_i * 3600 }
     elsif config.key? :seconds_ago
       timestamp = calculate_timestamp config[:seconds_ago].to_i
     end
     path = "#{path}&since=#{timestamp}"
-    req = Net::HTTP::Get.new path
-
-    client.request req do |response|
-      response.read_body do |chunk|
-        yield remove_headers chunk
-      end
+    response = @client.call(path, false)
+    if response.code.to_i == 404
+      critical "Container '#{container_name}' not found on #{@client.uri}"
     end
+    yield remove_headers response.read_body
   end
 
   def remove_headers(raw_logs)
     lines = raw_logs.split("\n")
-    lines.map! { |line| line.byteslice(8, line.bytesize) }
-    lines.join("\n")
+    lines.map! do |line|
+      # Check only logs generated with the 8 bits control
+      if !line.nil? && /^(0|1|2)000$/ =~ line.byteslice(0, 4).unpack('C*').join('')
+        # Remove the first 8 bits and ansii colors too
+        line.byteslice(8, line.bytesize).gsub(/\x1b\[[\d;]*?m/, '')
+      end
+    end
+    # We want the most recent logs lines first
+    lines.compact.reverse.join("\n")
   end
 
   def includes_any?(str, array_of_substrings)
@@ -135,11 +170,30 @@ insensitive',
   end
 
   def run
-    container = config[:container]
-    process_docker_logs(container) do |log_chunk|
-      problem = detect_problem log_chunk
-      critical "#{container} container logs indicate problem: '#{problem}'." unless problem.nil?
+    @client = DockerApi.new(config[:docker_host])
+    problem = []
+    problem_string = nil
+    path = "/containers/json?all=#{config[:check_all]}"
+    containers = config[:container]
+    if config[:container].none?
+      warn_msg = %(
+        Collecting logs from all containers is dangerous and could lead to sensu client hanging depending on volume of logs.
+        This not recommended for production environments.
+      ).gsub(/\s+/, ' ').strip
+      message warn_msg
     end
-    ok "No errors detected from #{container} container logs."
+    containers = @client.parse(path).map { |p| p['Names'][0].delete('/') } if containers.none?
+    critical 'Check all containers was asked but no containers was found' if containers.none?
+    containers.each do |container|
+      process_docker_logs container do |log_chunk|
+        problem_string = detect_problem(log_chunk)
+        break unless problem_string.nil?
+      end
+      problem << "\tError found inside container : '#{container}'\n\t\t#{problem_string}" unless problem_string.nil?
+    end
+    problem_string = problem.join("\n")
+    critical "Container(s) logs indicate problems :\n#{problem_string}" unless problem.none?
+    containers_string = containers.join(', ')
+    ok "No errors detected from logs inside container(s) : \n#{containers_string}"
   end
 end

@@ -19,6 +19,15 @@ This check supports docker versions >= 1.18. Check docker-engine API for more in
 
 ## Usage
 
+### Default docker host
+By default, all the checks will try to use a default docker host if a specific docker host is not provided to the check on the command line (-H <docker_host> / --docker-host <docker_host>).
+
+Those paramaters will be tried in this order as default docker host :
+
+    DOCKER_URL environnement variable
+    DOCKER_HOST environnement variable
+    /var/run/docker.sock file
+
 ## Installation
 
 [Installation and Setup](http://sensu-plugins.io/docs/installation_instructions.html)
