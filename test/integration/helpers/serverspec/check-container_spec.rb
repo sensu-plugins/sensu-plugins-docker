@@ -11,7 +11,27 @@ describe 'ruby environment' do
   it_behaves_like 'ruby checks', check
 end
 
-describe command("#{check} -N test") do
+describe command("#{check} -N test_running") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/CheckDockerContainer OK: test is running on unix:\/\/\/var\/run\/docker.sock./) }
+  its(:stdout) { should match(/CheckDockerContainer OK: test_running is running on unix:\/\/\/var\/run\/docker.sock./) }
+end
+
+describe command("#{check} -x -N test_running") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/CheckDockerContainer OK: test_running is running on unix:\/\/\/var\/run\/docker.sock./) }
+end
+
+describe command("#{check} -N test_exited_ok") do
+  its(:exit_status) { should eq 2 }
+  its(:stdout) { should match(/CheckDockerContainer CRITICAL: test_exited_ok is exited on unix:\/\/\/var\/run\/docker.sock./) }
+end
+
+describe command("#{check} -x -N test_exited_ok") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/CheckDockerContainer OK: test_exited_ok has exited without error on unix:\/\/\/var\/run\/docker.sock./) }
+end
+
+describe command("#{check} -x -N test_exited_fail") do
+  its(:exit_status) { should eq 2 }
+  its(:stdout) { should match(/CheckDockerContainer CRITICAL: test_exited_fail has exited with status code 1 on unix:\/\/\/var\/run\/docker.sock./) }
 end

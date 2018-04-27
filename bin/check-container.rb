@@ -56,6 +56,12 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
          short: '-t TAG',
          long: '--tag TAG'
 
+  option :allowexited,
+         short: '-x',
+         long: '--allow-exited',
+         boolean: true,
+         description: 'Do not raise alert if container has exited without error'
+
   def run
     @client = DockerApi.new(config[:docker_host])
     path = "/containers/#{config[:container]}/json"
@@ -74,6 +80,12 @@ class CheckDockerContainer < Sensu::Plugin::Check::CLI
         end
       end
       ok "#{config[:container]} is running on #{@client.uri}."
+    elsif config[:allowexited] && body['State']['Status'] == 'exited'
+      if (body['State']['ExitCode']).zero?
+        ok "#{config[:container]} has exited without error on #{@client.uri}."
+      else
+        critical "#{config[:container]} has exited with status code #{body['State']['ExitCode']} on #{@client.uri}."
+      end
     else
       critical "#{config[:container]} is #{body['State']['Status']} on #{@client.uri}."
     end

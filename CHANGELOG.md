@@ -8,6 +8,7 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ### Added
  - intergration test for container check
+ - check-container.rb: -x (--allow-exited) to avoid raising alerts when container exited without error, useful for task oriented containers monitoring.
 
 ## [3.0.0] - 2018-02-17
 ### Breaking Changes

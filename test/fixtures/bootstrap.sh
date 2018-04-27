@@ -15,4 +15,9 @@ gem install sensu-plugins-docker-*.gem
 
 # start container for testing
 
-docker run --name test -d --rm alpine sh -c 'while true; do sleep 1; done'
+docker run --name test_running -d --rm alpine sh -c 'while true; do sleep 1; done'
+docker run --name test_exited_ok -d alpine sh -c 'exit 0'
+docker run --name test_exited_fail -d alpine sh -c 'exit 1'
+
+# for debugging
+docker ps -a
