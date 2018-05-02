@@ -18,7 +18,8 @@ notifications:
     on_success: change
     on_failure: always
 script:
-- bundle exec rake default
+- bundle exec rake quick
+- bundle exec rake kitchen:ruby-`echo $TRAVIS_RUBY_VERSION | sed -e "s/\.//g"`-debian-8
 - gem build sensu-plugins-docker.gemspec
 - gem install sensu-plugins-docker-*.gem
 deploy:

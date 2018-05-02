@@ -6,6 +6,9 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
+### Added
+ - intergration test for container check
+
 ## [3.0.0] - 2018-02-17
 ### Breaking Changes
 - Default docker host defined by DockerApi Class ( ENV[DOCKER_URL] => ENV[DOCKER_HOST] => /var/run/docker.sock )
