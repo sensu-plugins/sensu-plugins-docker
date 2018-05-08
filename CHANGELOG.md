@@ -6,9 +6,10 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
+## [3.1.0] - 2018-05-07
 ### Added
- - intergration test for container check
- - check-container.rb: -x (--allow-exited) to avoid raising alerts when container exited without error, useful for task oriented containers monitoring.
+ - intergration test for container check (@antonidabek)
+ - check-container.rb: -x (--allow-exited) to avoid raising alerts when container exited without error, useful for task oriented containers monitoring. (@antonidabek)
 
 ## [3.0.0] - 2018-02-17
 ### Breaking Changes
@@ -145,7 +146,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.0.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.1.0...HEAD
+[3.1.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.4.0..1.5.0
