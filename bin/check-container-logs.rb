@@ -138,7 +138,7 @@ class ContainerLogChecker < Sensu::Plugin::Check::CLI
     lines = raw_logs.split("\n")
     lines.map! do |line|
       # Check only logs generated with the 8 bits control
-      if !line.nil? && /^(0|1|2)000$/ =~ line.byteslice(0, 4).unpack('C*').join('')
+      if !line.nil? && line.bytesize > 8 && /^(0|1|2)000$/ =~ line.byteslice(0, 4).unpack('C*').join('')
         # Remove the first 8 bits and ansii colors too
         line.byteslice(8, line.bytesize).gsub(/\x1b\[[\d;]*?m/, '')
       end

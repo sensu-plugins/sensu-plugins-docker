@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed at [Our CHANGELOG Guidelines ](https://
 Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Fixed
+ - check-container-logs.rb: fix nil.gsub condition on empty log lines
 
 ## [3.1.0] - 2018-05-07
 ### Added
