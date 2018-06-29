@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed at [Our CHANGELOG Guidelines ](https://
 Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## [3.1.1] - 2018
 ### Fixed
  - check-container-logs.rb: fix nil.gsub condition on empty log lines
 
@@ -148,7 +150,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.1.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.1.1...HEAD
+[3.1.1]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/1.5.0...2.0.0
