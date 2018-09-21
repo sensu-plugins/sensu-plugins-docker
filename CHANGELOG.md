@@ -6,6 +6,10 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
+## [3.1.2] - 2018
+### Added 
+ - metrics-docker-stats.rb: New Regex flag to filter container using Regex String.
+ 
 ## [3.1.1] - 2018
 ### Fixed
  - check-container-logs.rb: fix nil.gsub condition on empty log lines
