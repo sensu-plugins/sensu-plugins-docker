@@ -6,9 +6,8 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
-## [3.1.2] - 2018
 ### Added 
- - metrics-docker-stats.rb: New Regex flag to filter container using Regex String.
+ - metrics-docker-stats.rb: New option `--container-list-regex` to filter containers using Regex String (@parin921996).
  
 ## [3.1.1] - 2018
 ### Fixed
