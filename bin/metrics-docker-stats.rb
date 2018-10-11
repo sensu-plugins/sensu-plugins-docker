@@ -69,7 +69,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option :container_list_regex,
          description: 'Regex for container list to collect metrics for',
          short: '-R CONTAINER_LIST_REGEX',
-         long: '--container-list-regex CONTAINER_LIST_REGEX',
+         long: '--container-list-regex CONTAINER_LIST_REGEX'
 
   option :docker_host,
          description: 'Docker API URI. https://host, https://host:port, http://host, http://host:port, host:port, unix:///path',
@@ -130,7 +130,7 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
     list = if config[:container] != ''
              [config[:container]]
-           elsif config[:container_list_regex].nil?
+           elsif !config[:container_list_regex].nil?
              create_container_list(list_containers, config[:container_list_regex])
            else
              list_containers
