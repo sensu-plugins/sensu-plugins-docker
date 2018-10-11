@@ -38,6 +38,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'codeclimate-test-reporter', '~> 0.4'
   s.add_development_dependency 'github-markup',             '~> 1.3'
   s.add_development_dependency 'kitchen-docker',            '~> 2.6'
+  # TODO: remove this pin when we remove ruby 2.3 support, see: https://github.com/ruby/net-telnet/issues/14 for more information
+  s.add_development_dependency 'net-telnet',                '0.1.1'
   s.add_development_dependency 'pry',                       '~> 0.10'
   s.add_development_dependency 'rake',                      '~> 10.0'
   s.add_development_dependency 'redcarpet',                 '~> 3.2'
