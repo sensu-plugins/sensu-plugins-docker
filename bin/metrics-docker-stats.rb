@@ -160,9 +160,9 @@ class DockerStatsMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
     containers.each do |container|
       list << if config[:friendly_names]
-                container['Names'][0].delete('/')
+                container['Names'][-1].delete('/')
               elsif config[:name_parts]
-                container['Names'][0].delete('/')
+                container['Names'][-1].delete('/')
               else
                 container['Id']
               end
