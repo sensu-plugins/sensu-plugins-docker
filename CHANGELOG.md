@@ -6,6 +6,17 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
+### Security
+- updated rubocop dependency to `~> 0.51.0` per: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-8418. (@majormoses)
+- updated `yard` dependency to `~> 0.9.11` per: https://nvd.nist.gov/vuln/detail/CVE-2017-17042 which closes attacks against a yard server loading arbitrary files (@majormoses)
+
+### Breaking Changes
+- dropped support for ruby versions `< 2.3` as they are EOL (@majormoses)
+
+### Changed
+- bumped `sensu-plugins` dep to `~> 2.7` (@majormoses)
+- appeased he cops (@majormoses)
+
 ## [3.2.0] - 2018-11-22
 ### Fixed
  - metrics-docker-stats.rb: fix #16 -n option causes metrics-docker-stats.rb to fail, in case containers are linked together
@@ -154,7 +165,8 @@ changes some options. Review your check commands before deploying this version.
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.1.1...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.2.0...HEAD
+[3.2.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.1.1...3.2.0
 [3.1.1]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/sensu-plugins/sensu-plugins-docker/compare/2.0.0...3.0.0

@@ -69,7 +69,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
          description: 'cgroup_template',
          short: '-T TPL_STRING',
          long: '--cgroup-template TPL_STRING',
-         default: 'cpu/docker/%{container}/cgroup.procs'
+         default: 'cpu/docker/%<container>s/cgroup.procs'
 
   option :friendly_names,
          description: 'use friendly name if available',
@@ -92,7 +92,7 @@ class DockerContainerMetrics < Sensu::Plugin::Metric::CLI::Graphite
     sleep(1)
     ps2 = Sys::ProcTable.ps.group_by(&:pid)
 
-    fields = [:rss, :vsize, :nswap, :pctmem]
+    fields = %i[rss vsize nswap pctmem]
 
     path = '/containers/json'
     containers = @client.parse(path)
