@@ -5,10 +5,12 @@ This CHANGELOG follows the format listed at [Our CHANGELOG Guidelines ](https://
 Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## [3.2.0] - 2018-11-22
 ### Fixed
  - metrics-docker-stats.rb: fix #16 -n option causes metrics-docker-stats.rb to fail, in case containers are linked together
 
-## [3.1.1] - 2018
+## [3.1.1] - 2018-06-29
 ### Fixed
  - check-container-logs.rb: fix nil.gsub condition on empty log lines
 
