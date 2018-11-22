@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed at [Our CHANGELOG Guidelines ](https://
 Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Fixed
+ - metrics-docker-stats.rb: fix #16 -n option causes metrics-docker-stats.rb to fail, in case containers are linked together
 
 ## [3.1.1] - 2018
 ### Fixed
