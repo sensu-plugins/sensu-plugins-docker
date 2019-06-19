@@ -9,9 +9,13 @@
 ## Functionality
 This check supports docker versions >= 1.18. Check docker-engine API for more information  
 
+The check-service.rb and check-service-logs.rb are only supported for docker when run in swarm mode
+
 ## Files
  * check-container.rb
+ * check-service.rb
  * check-container-logs.rb
+ * check-service-logs.rb
  * check-docker-container.rb
  * metrics-docker-container.rb
  * metrics-docker-stats.rb
