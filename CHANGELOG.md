@@ -5,6 +5,9 @@ This CHANGELOG follows the format listed at [Our CHANGELOG Guidelines ](https://
 Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Added
+ - check-service.rb: a new check similar to check-cotainer but for docker services when running in swarm mode
+ - check-service-logs.rb: a new check mirroring check-container-logs.rb but for docker services
 
 ## [3.2.0] - 2018-11-22
 ### Fixed
