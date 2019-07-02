@@ -26,15 +26,6 @@ platforms:
   - name: debian-8
 
 suites:
-  - name: ruby-20
-    driver:
-      image: ruby:2.0-slim
-  - name: ruby-21
-    driver:
-      image: ruby:2.1-slim
-  - name: ruby-22
-    driver:
-      image: ruby:2.2-slim
   - name: ruby-230
     driver:
       image: ruby:2.3.0-slim
