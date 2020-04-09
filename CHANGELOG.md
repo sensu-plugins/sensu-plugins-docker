@@ -6,6 +6,10 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
+## [4.0.0] - 2020-04-09
+### Breaking Changes
+- bumped `sensu-plugin` dependency from `~> 2.0` to `~> 4.0` please consult the changelog for additional details. The notable breaking change [is](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07)
+
 ## [3.2.0] - 2018-11-22
 ### Fixed
  - metrics-docker-stats.rb: fix #16 -n option causes metrics-docker-stats.rb to fail, in case containers are linked together
