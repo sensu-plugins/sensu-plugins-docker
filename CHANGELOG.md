@@ -8,7 +8,8 @@ Which is based on [Keep A Changelog](http://keepachangelog.com/)
 
 ## [4.0.0] - 2020-04-09
 ### Breaking Changes
-- bumped `sensu-plugin` dependency from `~> 2.0` to `~> 4.0` please consult the changelog for additional details. The notable breaking change [is](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07)
+- bumped `sensu-plugin` dependency from `~> 2.0` to `~> 4.0` please consult the changelog for additional details. The notable breaking change [is](https://github.com/sensu-plugins/sensu-plugin/blob/master/CHANGELOG.md#v145---2017-03-07) (@majormoses)
+- dopped support for ruby `< 2.3` (@majormoses)
 
 ## [3.2.0] - 2018-11-22
 ### Fixed
