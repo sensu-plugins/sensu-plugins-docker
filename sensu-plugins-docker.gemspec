@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.version                = SensuPluginsDocker::Version::VER_STRING
 
   s.add_runtime_dependency 'sensu-plugin',  '~> 4.0'
-  s.add_runtime_dependency 'sys-proctable', '0.9.8'
+  s.add_runtime_dependency 'sys-proctable', '1.2.5'
   s.add_runtime_dependency 'net_http_unix', '0.2.2'
 
   s.add_development_dependency 'bundler',                   '~> 2.1'
