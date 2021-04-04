@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake',                      '~> 13.0'
   s.add_development_dependency 'redcarpet',                 '~> 3.2'
   s.add_development_dependency 'rspec',                     '~> 3.1'
-  s.add_development_dependency 'rubocop',                   '~> 0.40.0'
+  s.add_development_dependency 'rubocop',                   '~> 0.81.0'
   s.add_development_dependency 'test-kitchen',              '~> 1.16.0'
   s.add_development_dependency 'yard',                      '~> 0.8'
 end
